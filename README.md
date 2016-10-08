@@ -10,5 +10,6 @@ Implemented:
 * SVM with kernels
 * K-Means
 * PCA
+* Factorization machines
 
 
