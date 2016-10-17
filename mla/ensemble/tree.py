@@ -1,4 +1,3 @@
-
 import random
 
 import numpy as np
@@ -101,18 +100,24 @@ class Node:
                                    minimum_gain, gain)
 
         except AssertionError:
-            self.calculate_terminal_node(y)
+            self._terminal_node(y)
 
-    def calculate_terminal_node(self, y):
+    def _terminal_node(self, y):
         if self.regression:
             self.outcome = np.mean(y)
         else:
             self.outcome = stats.itemfreq(y)[:, 1] / float(y.shape[0])
 
-    def classify(self, row):
+    def predict_row(self, row):
         if not self.is_empty:
             if row[self.column_index] < self.threshold:
-                return self.left_child.classify(row)
+                return self.left_child.predict_row(row)
             else:
-                return self.right_child.classify(row)
+                return self.right_child.predict_row(row)
         return self.outcome
+
+    def predict(self, X):
+        result = np.zeros(X.shape[0])
+        for i in range(X.shape[0]):
+            result[i] = self.predict_row(X[i, :])
+        return result

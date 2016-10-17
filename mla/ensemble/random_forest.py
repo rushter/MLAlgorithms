@@ -48,7 +48,7 @@ class RandomForestClassifier(RandomForest):
         for i in range(X.shape[0]):
             row_pred = np.zeros(y_shape)
             for tree in self.trees:
-                row_pred += tree.classify(X[i, :])
+                row_pred += tree.predict_row(X[i, :])
 
             row_pred /= self.n_estimators
             predictions[i, :] = row_pred
@@ -68,10 +68,7 @@ class RandomForestRegressor(RandomForest):
             self.trees.append(Node(regression=True, criterion=self.criterion))
 
     def _predict(self, X=None):
-        predictions = np.zeros(X.shape[0])
-
-        for i in range(X.shape[0]):
-            row_pred = sum([tree.classify(X[i, :]) for tree in self.trees])
-            row_pred /= self.n_estimators
-            predictions[i] = row_pred
-        return predictions
+        predictions = np.zeros((X.shape[0], self.n_estimators))
+        for i, tree in enumerate(self.trees):
+            predictions[:, i] = tree.predict(X)
+        return predictions.mean(axis=1)
