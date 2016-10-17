@@ -11,5 +11,6 @@ Implemented:
 * K-Means
 * PCA
 * Factorization machines
+* Gradient Boosting (GBDT, GBRT, GBM)
 
 
