@@ -1,6 +1,6 @@
 import logging
 
-from sklearn.cross_validation import train_test_split
+from sklearn.model_selection import train_test_split
 from sklearn.datasets import make_classification
 from sklearn.metrics import roc_auc_score
 
