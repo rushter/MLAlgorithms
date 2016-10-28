@@ -16,6 +16,8 @@ from mla.neuralnet.optimizers import Adam, RMSprop
 logging.basicConfig(level=logging.DEBUG)
 
 
+# Example taken from: https://github.com/fchollet/keras/blob/master/examples/lstm_text_generation.py
+
 def sample(preds, temperature=1.0):
     # helper function to sample an index from a probability array
     preds = np.asarray(preds).astype('float64')
@@ -36,7 +38,7 @@ y = y[0:items_count]
 print(X.shape, y.shape)
 # LSTM OR RNN
 # rnn_layer = RNN(128, return_sequences=False)
-rnn_layer = LSTM(128,return_sequences=False,)
+rnn_layer = LSTM(128, return_sequences=False, )
 
 model = NeuralNet(
     layers=[
@@ -55,7 +57,7 @@ model = NeuralNet(
 
 )
 
-for i in xrange(25):
+for _ in range(25):
     model.fit(X, y)
     start_index = random.randint(0, len(text) - maxlen - 1)
 

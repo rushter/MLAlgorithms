@@ -53,7 +53,6 @@ def addition_nlp(ReccurentLayer):
         batch_size=64,
         max_epochs=15,
     )
-    # print X_train.shape
     model.fit(X_train, y_train)
     predictions = np.round(model.predict(X_test))
     predictions = np.packbits(predictions.astype(np.uint8))
