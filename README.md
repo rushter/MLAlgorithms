@@ -14,3 +14,7 @@ Implemented:
 * Gradient Boosting (GBDT, GBRT, GBM)
 
 
+TODO:
+* t-SNE
+* MCMC
+* Word2vec
