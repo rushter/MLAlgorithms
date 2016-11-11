@@ -22,8 +22,8 @@ class BaseFM(BaseEstimator):
         self.lr = learning_rate
         self.init_stdev = init_stdev
         self.max_iter = max_iter
-        self.loss = mean_squared_error
-        self.loss_grad = elementwise_grad(mean_squared_error)
+        self.loss = None
+        self.loss_grad = None
 
     def fit(self, X, y=None):
         self._setup_input(X, y)
@@ -57,7 +57,10 @@ class BaseFM(BaseEstimator):
 
 
 class FMRegressor(BaseFM):
-    pass
+    def fit(self, X, y=None):
+        super(FMRegressor, self).fit(X, y)
+        self.loss = mean_squared_error
+        self.loss_grad = elementwise_grad(mean_squared_error)
 
 
 class FMClassifier(BaseFM):
