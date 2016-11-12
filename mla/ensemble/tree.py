@@ -2,43 +2,35 @@ import random
 
 import numpy as np
 from scipy import stats
-from numba import jit
 
-from mla.ensemble.base import split_df
+from mla.ensemble.base import split, split_dataset, xgb_criterion
 
 random.seed(111)
 
 
-class Node:
+class Tree(object):
+    """Recursive implementation of decision tree."""
+
     def __init__(self, regression=False, criterion=None):
         self.regression = regression
-        self.n_samples = None
         self.impurity = None
-        self.left_child = None
-        self.right_child = None
         self.threshold = None
         self.column_index = None
         self.outcome = None
-        self.depth = 0
         self.criterion = criterion
+        self.loss = None
 
-    def size(self):
-        if not self.is_empty:
-            return 1 + self.left_child.size() + self.right_child.size()
-        return 1
+        self.left_child = None
+        self.right_child = None
 
     @property
-    def is_empty(self):
+    def is_terminal(self):
         return not bool(self.left_child and self.right_child)
 
-    def split(self, X, y, value):
-        left_mask = (X < value)
-        right_mask = (X >= value)
-        return y[left_mask], y[right_mask]
-
-    def find_splits(self, X, y):
+    def _find_splits(self, X, y):
         """Find all possible split-values."""
 
+        # Sort feature set
         df = np.rec.fromarrays([X, y], names='x,y')
         df.sort(order='x')
 
@@ -49,67 +41,101 @@ class Node:
                 split_values.add(average)
         return list(split_values)
 
-    def find_best_split(self, X, y, n_features):
+    def _find_best_split(self, X, target, n_features):
+        """Find best feature and value for split. Greedy algorithm."""
+
+        # Sample random subset of features
         subset = random.sample(list(range(0, X.shape[1])), n_features)
-        max_gain = None
-        max_col = None
-        max_val = None
+        max_gain, max_col, max_val = None, None, None
+
         for column in subset:
-            split_values = self.find_splits(X[:, column], y)
+            split_values = self._find_splits(X[:, column], target['y'])
             for value in split_values:
-                splits = self.split(X[:, column], y, value)
-                gain = self.criterion(y, splits)
-                if gain > max_gain or (max_gain is None):
-                    max_col = column
-                    max_val = value
-                    max_gain = gain
+                if self.loss is None:
+                    # Random forest
+                    splits = split(X[:, column], target['y'], value)
+                    gain = self.criterion(target['y'], splits)
+                else:
+                    # Gradient boosting
+                    left, right = split_dataset(X, target, column, value, return_X=False)
+                    gain = xgb_criterion(target, left, right, self.loss)
+
+                if (max_gain is None) or (gain > max_gain):
+                    max_col, max_val, max_gain = column, value, gain
         return max_col, max_val, max_gain
 
-    def train(self, X, y, max_features=None, min_samples_split=10, max_depth=None, minimum_gain=0.01,
-              parent_gain=0.0):
+    def train(self, X, target, max_features=None, min_samples_split=10, max_depth=None, minimum_gain=0.01, loss=None):
+        """Build a decision tree from training set.
 
-        if max_features is None:
-            max_features = int(np.sqrt(X.shape[1]))
+        Parameters
+        ----------
+
+        X : array-like
+            Feature dataset.
+        target : dictionary or array-like
+            Target values.
+        max_features : int or None
+            The number of features to consider when looking for the best split.
+        min_samples_split : int
+            The minimum number of samples required to split an internal node.
+        max_depth : int
+            Maximum depth of the tree.
+        minimum_gain : float, default 0.01
+            Minimum gain required for splitting.
+        """
+
+        if not isinstance(target, dict):
+            target = {'y': target}
+
+        # Loss for gradient boosting
+        if loss is not None:
+            self.loss = loss
 
         try:
+            # Exit from recursion using assert syntax
             assert (X.shape[0] > min_samples_split)
             assert (max_depth > 0)
 
-            column, value, gain = self.find_best_split(X, y, max_features)
+            column, value, gain = self._find_best_split(X, target, max_features)
+            assert gain is not None
             if self.regression:
                 assert (gain != 0)
             else:
                 assert (gain > minimum_gain)
-            assert (gain != parent_gain)
 
             self.column_index = column
             self.threshold = value
             self.impurity = gain
 
-            (left_X, left_y), (right_X, right_y) = split_df(X, y, column, value)
+            # Split dataset
+            left_X, right_X, left_target, right_target = split_dataset(X, target, column, value)
 
-            assert (left_X.shape[0] > 0)
-            assert (right_X.shape[0] > 0)
+            self.left_child = Tree(self.regression, self.criterion)
+            self.left_child.train(left_X, left_target, max_features, min_samples_split, max_depth - 1,
+                                  minimum_gain, loss)
 
-            self.left_child = Node(self.regression, self.criterion)
-            self.left_child.train(left_X, left_y, max_features, min_samples_split, max_depth - 1,
-                                  minimum_gain, gain)
-
-            self.right_child = Node(self.regression, self.criterion)
-            self.right_child.train(right_X, right_y, max_features, min_samples_split, max_depth - 1,
-                                   minimum_gain, gain)
-
+            self.right_child = Tree(self.regression, self.criterion)
+            self.right_child.train(right_X, right_target, max_features, min_samples_split, max_depth - 1,
+                                   minimum_gain, loss)
         except AssertionError:
-            self._terminal_node(y)
+            self._calculate_leaf_value(target)
 
-    def _terminal_node(self, y):
-        if self.regression:
-            self.outcome = np.mean(y)
+    def _calculate_leaf_value(self, targets):
+        """Find optimal value for leaf."""
+        if self.loss is not None:
+            # Gradient boosting
+            self.outcome = self.loss.approximate(targets['actual'], targets['y_pred'])
         else:
-            self.outcome = stats.itemfreq(y)[:, 1] / float(y.shape[0])
+            # Random Forest
+            if self.regression:
+                # Mean value for regression task
+                self.outcome = np.mean(targets['y'])
+            else:
+                # Probability for classification task
+                self.outcome = stats.itemfreq(targets['y'])[:, 1] / float(targets['y'].shape[0])
 
     def predict_row(self, row):
-        if not self.is_empty:
+        if not self.is_terminal:
             if row[self.column_index] < self.threshold:
                 return self.left_child.predict_row(row)
             else:
