@@ -5,14 +5,14 @@ A collection of minimal and clean examples of machine learning algorithms implem
  This project is targeting people who wants to learn internals of ml algorithms or implement them from scratch.  
 
 ### Implemented: 
-* Deep learning (MLP, CNN, RNN, LSTM)
-* Linear regression, logistic regression
-* Random Forests
-* SVM with kernels
-* K-Means
-* PCA
-* Factorization machines
-* Gradient Boosting trees (also known as GBDT, GBRT, GBM, XGBoost)
+* [Deep learning (MLP, CNN, RNN, LSTM)] (mla/neuralnet)
+* [Linear regression, logistic regression] (mla/linear_models.py)
+* [Random Forests] (mla/ensemble/random_forest.py)
+* [SVM with kernels] (master/mla/svm)
+* [K-Means] (mla/kmeans.py)
+* [PCA] (mla/pca.py)
+* [Factorization machines] (mla/fm.py)
+* [Gradient Boosting trees (also known as GBDT, GBRT, GBM, XGBoost)] (mla/ensemble/gbm.py)
 
 
 ### TODO:
