@@ -1,10 +1,10 @@
 # Machine learning algorithms 
 A collection of minimal and clean examples of machine learning algorithms implemented in numpy.
 
-#### Why?
+### Why?
  This project is targeting people who wants to learn internals of ml algorithms or implement them from scratch.  
 
-#### Implemented: 
+### Implemented: 
 * Deep learning (MLP, CNN, RNN, LSTM)
 * Linear regression, logistic regression
 * Random Forests
@@ -15,7 +15,7 @@ A collection of minimal and clean examples of machine learning algorithms implem
 * Gradient Boosting trees (also known as GBDT, GBRT, GBM, XGBoost)
 
 
-#### TODO:
+### TODO:
 * t-SNE
 * MCMC
 * Word2vec
@@ -23,5 +23,5 @@ A collection of minimal and clean examples of machine learning algorithms implem
 * K-nearest neighbors
 
 
-#### Contributing
+### Contributing
 Your contributions are always welcome!
