@@ -95,10 +95,10 @@ class SVM(BaseEstimator):
         n = X.shape[0]
         result = np.zeros(n)
         for i in range(n):
-            result[i] = np.sign(self._predict_one(X[i, :]))
+            result[i] = np.sign(self._predict_row(X[i, :]))
         return result
 
-    def _predict_one(self, X):
+    def _predict_row(self, X):
         k_v = self.kernel(self.X[self.sv_idx], X)
         return np.dot((self.alpha[self.sv_idx] * self.y[self.sv_idx]).T, k_v.T) + self.b
 
@@ -110,9 +110,13 @@ class SVM(BaseEstimator):
         return alpha
 
     def _error(self, i):
-        return self._predict_one(self.X[i]) - self.y[i]
+        """Error for single example."""
+        return self._predict_row(self.X[i]) - self.y[i]
 
     def _find_bounds(self, i, j):
+        """Find bounds L and H such that L ≤ alpha ≤ H.
+        alpha must satisfy the constraint 0 ≤ αlpha ≤ C.
+        """
         if self.y[i] != self.y[j]:
             L = max(0, self.alpha[j] - self.alpha[i])
             H = min(self.C, self.C - self.alpha[i] + self.alpha[j])
