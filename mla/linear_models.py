@@ -1,14 +1,10 @@
 import logging
-import math
 
 import autograd.numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-from autograd import elementwise_grad
 from autograd import grad
 
 from mla.base import BaseEstimator
-from mla.metrics.metrics import mean_squared_error, logloss, binary_crossentropy
+from mla.metrics.metrics import mean_squared_error, binary_crossentropy
 
 np.random.seed(1000)
 
@@ -21,7 +17,7 @@ class BasicRegression(BaseEstimator):
         ----------
         lr : float, default 0.001
             Learning rate.
-        penalty : str, {'l1','l2',None'}, default None
+        penalty : str, {'l1', 'l2', None'}, default None
             Regularization function name.
         C : float, default 0.01
             The regularization coefficient.
