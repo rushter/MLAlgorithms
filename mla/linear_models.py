@@ -11,7 +11,9 @@ np.random.seed(1000)
 
 class BasicRegression(BaseEstimator):
     def __init__(self, lr=0.001, penalty='None', C=0.01, tolerance=0.0001, max_iters=1000):
-        """
+        """Basic class for implementing continuous regression estimators which
+        are trained with gradient descent optimization on their particular loss
+        function.
 
         Parameters
         ----------
@@ -22,7 +24,8 @@ class BasicRegression(BaseEstimator):
         C : float, default 0.01
             The regularization coefficient.
         tolerance : float, default 0.0001
-            If the gradient descent updates are smaller than `tolerance` then stop optimization process.
+            If the gradient descent updates are smaller than `tolerance`, then
+            stop optimization process.
         max_iters : int, default 10000
             The maximum number of iterations.
         """

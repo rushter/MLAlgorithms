@@ -11,6 +11,32 @@ random.seed(1111)
 
 
 class KMeans(BaseEstimator):
+    """Partition a dataset into K clusters.
+
+    Finds clusters by repeatedly assigning each data point to the cluster with
+    the nearest centroid and iterating until the assignments converge (meaning
+    they don't change during an iteration) or the maximum number of iterations
+    is reached.
+
+    Parameters
+    ----------
+
+    K : int
+        The number of clusters into which the dataset is partitioned.
+    max_iters: int
+        The maximum iterations of assigning points to the nearest cluster.
+        Short-circuited by the assignments converging on their own.
+    init: str, default 'random'
+        The name of the method used to initialize the first clustering.
+
+        'random' - Randomly select values from the dataset as the K centroids.
+        '++' - Select a random first centroid from the dataset, then select
+               K - 1 more centroids by choosing values from the dataset with a
+               probability distribution proportional to the squared distance
+               from each point's closest existing cluster. Attempts to create
+               larger distances between initial clusters to improve convergence
+               rates and avoid degenerate cases.
+    """
     y_required = False
 
     def __init__(self, K=5, max_iters=100, init='random'):
@@ -34,6 +60,7 @@ class KMeans(BaseEstimator):
             raise ValueError('Unknown type of init parameter')
 
     def predict(self):
+        """Perform the clustering on the dataset."""
         self._initialize_cetroids(self.init)
         centroids = self.centroids
         for _ in range(self.max_iters):
