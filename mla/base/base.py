@@ -7,6 +7,21 @@ class BaseEstimator(object):
     y_required = True
 
     def _setup_input(self, X, y=None):
+        """Ensure inputs to an estimator are in the expected format.
+
+        Ensures X and y are stored as numpy ndarrays by converting from an
+        array-like object if necessary. Enables estimators to define whether
+        they require a set of y target values or not with y_required, e.g.
+        kmeans clustering requires no target labels and is fit against only X.
+
+        Parameters
+        ----------
+        X : array-like
+            Feature dataset.
+        y : array-like
+            Target values. By default is required, but if y_required = false
+            then may be omitted.
+        """
         if not isinstance(X, np.ndarray):
             X = np.array(X)
 

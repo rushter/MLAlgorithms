@@ -11,7 +11,13 @@ class PCA(BaseEstimator):
     y_required = False
 
     def __init__(self, n_components, solver='svd'):
-        """Principal component analysis (PCA) implementation..
+        """Principal component analysis (PCA) implementation.
+
+        Transforms a dataset of possibly correlated values into n linearly
+        uncorrelated components. The components are ordered such that the first
+        has the largest possible variance and each following component as the
+        largest possible variance given the previous components. This causes
+        the early components to contain most of the variability in the dataset.
 
         Parameters
         ----------
