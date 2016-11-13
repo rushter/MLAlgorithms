@@ -30,5 +30,9 @@ All algorithms are implemented in Python, using numpy, scipy and autograd.
         git clone https://github.com/rushter/MLAlgorithms
         cd MLAlgorithms; pip install -r requirements.txt
 
+### How to run examples without relative imports
+        cd MLAlgorithms
+        python -m examples.linear_models
+            
 ### Contributing
 Your contributions are always welcome!
