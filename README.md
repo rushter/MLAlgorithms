@@ -1,6 +1,8 @@
 # Machine learning algorithms
 A collection of minimal and clean implementations of machine learning algorithms.
 
+# add more comments here
+
 ### Why?
 This project is targeting people who wants to learn internals of ml algorithms or implement them from scratch.  
 The code is much easier to follow than the optimized libraries and easier to play with.  
