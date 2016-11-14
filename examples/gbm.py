@@ -12,9 +12,9 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 def classification():
+    # Generate a random binary classification problem.
     X, y = make_classification(n_samples=350, n_features=15, n_informative=10, random_state=1111, n_classes=2,
                                class_sep=1., n_redundant=0)
-    # y = y.flatten()
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.15, random_state=1111)
 
     model = GradientBoostingClassifier(n_estimators=50,
@@ -28,9 +28,11 @@ def classification():
 
 
 def regression():
+    # Generate a random regression problem
     X, y = make_regression(n_samples=500, n_features=5, n_informative=5, n_targets=1, noise=0.05, random_state=1111,
                            bias=0.5)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=1111)
+
     model = GradientBoostingRegressor(n_estimators=25, max_depth=5, max_features=3, )
     model.fit(X_train, y_train)
     predictions = model.predict(X_test)

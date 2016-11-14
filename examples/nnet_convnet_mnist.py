@@ -10,9 +10,11 @@ from mla.utils import one_hot
 
 logging.basicConfig(level=logging.DEBUG)
 
+
+# Load MNIST dataset
 X_train, X_test, y_train, y_test = load_mnist()
 
-# Normalization
+# Normalize data
 X_train /= 255.
 X_test /= 255.
 

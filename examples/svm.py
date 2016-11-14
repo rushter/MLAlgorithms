@@ -11,6 +11,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 def classification():
+    # Generate a random binary classification problem.
     X, y = make_classification(n_samples=1200, n_features=10, n_informative=5, random_state=1111, n_classes=2,
                                class_sep=1.75, )
     # Convert y to {-1, 1}
