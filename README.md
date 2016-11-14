@@ -2,9 +2,9 @@
 A collection of minimal and clean implementations of machine learning algorithms.
 
 ### Why?
-This project is targeting people who wants to learn internals of ml algorithms or implement them from scratch.
-The code is much easier to follow than the optimized libraries and easier to play with.
-All algorithms are implemented in Python, using numpy, scipy and autograd.
+This project is targeting people who wants to learn internals of ml algorithms or implement them from scratch.  
+The code is much easier to follow than the optimized libraries and easier to play with.  
+All algorithms are implemented in Python, using numpy, scipy and autograd.  
 
 ### Implemented:
 * [Deep learning (MLP, CNN, RNN, LSTM)] (mla/neuralnet)
@@ -32,8 +32,9 @@ All algorithms are implemented in Python, using numpy, scipy and autograd.
         pip install scipy numpy
         pip install .
 
-### How to run examples without relative imports
-        python examples/linear_models.py
+### How to run examples without installation
+        cd MLAlgorithms
+        python -m examples/linear_models
 
 ### Contributing
 Your contributions are always welcome!
