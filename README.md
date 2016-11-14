@@ -1,12 +1,12 @@
-# Machine learning algorithms 
+# Machine learning algorithms
 A collection of minimal and clean implementations of machine learning algorithms.
 
 ### Why?
-This project is targeting people who wants to learn internals of ml algorithms or implement them from scratch.  
-The code is much easier to follow than the optimized libraries and easier to play with.  
+This project is targeting people who wants to learn internals of ml algorithms or implement them from scratch.
+The code is much easier to follow than the optimized libraries and easier to play with.
 All algorithms are implemented in Python, using numpy, scipy and autograd.
 
-### Implemented: 
+### Implemented:
 * [Deep learning (MLP, CNN, RNN, LSTM)] (mla/neuralnet)
 * [Linear regression, logistic regression] (mla/linear_models.py)
 * [Random Forests] (mla/ensemble/random_forest.py)
@@ -21,18 +21,19 @@ All algorithms are implemented in Python, using numpy, scipy and autograd.
 * t-SNE
 * MCMC
 * Word2vec
-* Naive bayes 
+* Naive bayes
 * K-nearest neighbors
 * Adaboost
 * HMM
 
 ### Installation
         git clone https://github.com/rushter/MLAlgorithms
-        cd MLAlgorithms; pip install -r requirements.txt
+        cd MLAlgorithms
+        pip install scipy numpy
+        pip install .
 
 ### How to run examples without relative imports
-        cd MLAlgorithms
-        python -m examples.linear_models
-            
+        python examples/linear_models.py
+
 ### Contributing
 Your contributions are always welcome!
