@@ -1,11 +1,10 @@
-
 import autograd.numpy as np
-from autograd import grad
 
 EPS = 1e-15
 
 
 def unhot(function):
+    """Convert one-hot representation into one column."""
     def wrapper(actual, predicted):
         if len(actual.shape) > 1 and actual.shape[1] > 1:
             actual = actual.argmax(axis=1)
