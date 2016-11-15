@@ -42,18 +42,19 @@ class Convolution(Layer, ParamMixin):
         n_images, n_channels, height, width = self.shape(X.shape)
         self.last_input = X
         self.col = image_to_column(X, self.filter_shape, self.stride, self.padding)
-        self.col_W = self._params.W.reshape(self.n_filters, -1).T
+        self.col_W = self._params['W'].reshape(self.n_filters, -1).T
 
-        out = np.dot(self.col, self.col_W) + self._params.b
+        out = np.dot(self.col, self.col_W) + self._params['b']
         out = out.reshape(n_images, height, width, -1).transpose(0, 3, 1, 2)
         return out
 
     def backward_pass(self, delta):
         delta = delta.transpose(0, 2, 3, 1).reshape(-1, self.n_filters)
 
-        self._params.d_b = np.sum(delta, axis=0)
-        d_W = np.dot(self.col.T, delta)
-        self._params.d_W = d_W.transpose(1, 0).reshape(self._params.W.shape)
+        d_W = np.dot(self.col.T, delta).transpose(1, 0).reshape(self._params['W'].shape)
+        d_b = np.sum(delta, axis=0)
+        self._params.update_grad('b', d_b)
+        self._params.update_grad('W', d_W)
 
         d_c = np.dot(delta, self.col_W.T)
         return column_to_image(d_c, self.last_input.shape, self.filter_shape, self.stride, self.padding)

@@ -9,9 +9,9 @@ import sys
 from mla.datasets import load_nietzsche
 from mla.neuralnet import NeuralNet
 from mla.neuralnet.constraints import SmallNorm
-from mla.neuralnet.layers import Activation, Dense, Parameters
+from mla.neuralnet.layers import Activation, Dense
 from mla.neuralnet.layers.recurrent import LSTM, RNN
-from mla.neuralnet.optimizers import Adam, RMSprop
+from mla.neuralnet.optimizers import RMSprop
 
 logging.basicConfig(level=logging.DEBUG)
 

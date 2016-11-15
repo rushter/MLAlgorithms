@@ -2,7 +2,10 @@ import logging
 from itertools import combinations, islice
 
 import numpy as np
-from sklearn.model_selection import train_test_split
+try:
+    from sklearn.model_selection import train_test_split
+except ImportError:
+    from sklearn.cross_validation import train_test_split
 
 from mla.metrics import accuracy
 from mla.neuralnet import NeuralNet
