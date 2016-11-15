@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from mla.base import BaseEstimator
-from mla.metrics.distance import euclidian_distance
+from mla.metrics.distance import euclidean_distance
 
 random.seed(1111)
 
@@ -98,7 +98,7 @@ class KMeans(BaseEstimator):
         closest_index = None
         closest_distance = None
         for i, point in enumerate(centroids):
-            dist = euclidian_distance(self.X[fpoint], point)
+            dist = euclidean_distance(self.X[fpoint], point)
             if closest_index is None or dist < closest_distance:
                 closest_index = i
                 closest_distance = dist
@@ -109,7 +109,7 @@ class KMeans(BaseEstimator):
         return [np.mean(np.take(self.X[:, i], cluster)) for i in range(self.n_features)]
 
     def _dist_from_centers(self):
-        return np.array([min([euclidian_distance(x, c) for c in self.centroids]) for x in self.X])
+        return np.array([min([euclidean_distance(x, c) for c in self.centroids]) for x in self.X])
 
     def _choose_next_center(self):
         distances = self._dist_from_centers()
@@ -120,7 +120,7 @@ class KMeans(BaseEstimator):
         return self.X[ind]
 
     def _is_converged(self, centroids_old, centroids):
-        return True if sum([euclidian_distance(centroids_old[i], centroids[i]) for i in range(self.K)]) == 0 else False
+        return True if sum([euclidean_distance(centroids_old[i], centroids[i]) for i in range(self.K)]) == 0 else False
 
     def plot(self, data=None):
         sns.set(style="white")
