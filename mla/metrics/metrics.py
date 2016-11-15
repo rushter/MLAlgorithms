@@ -60,7 +60,6 @@ def root_mean_squared_log_error(actual, predicted):
 
 def logloss(actual, predicted):
     predicted = np.clip(predicted, EPS, 1 - EPS)
-    predicted /= predicted.sum(axis=1, keepdims=True)
     loss = -np.sum(actual * np.log(predicted))
     return loss / float(actual.shape[0])
 

@@ -4,10 +4,10 @@ import numpy as np
 
 
 def check_data(a, b):
-    if isinstance(a, list):
+    if isinstance(a, list) or isinstance(a, range):
         a = np.array(a)
 
-    if isinstance(b, list):
+    if isinstance(b, list) or isinstance(b, range):
         b = np.array(b)
 
     if type(a) != type(b):
