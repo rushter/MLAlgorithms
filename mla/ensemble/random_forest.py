@@ -8,7 +8,7 @@ from six.moves import range
 
 class RandomForest(BaseEstimator):
     def __init__(self, n_estimators=10, max_features=None, min_samples_split=10, max_depth=None, criterion=None):
-        """
+        """Base class for RandomForest.
 
         Parameters
         ----------
@@ -41,6 +41,9 @@ class RandomForest(BaseEstimator):
         for tree in self.trees:
             tree.train(self.X, self.y, max_features=self.max_features, min_samples_split=self.min_samples_split,
                        max_depth=self.max_depth)
+
+    def _predict(self, X=None):
+        raise NotImplementedError()
 
 
 class RandomForestClassifier(RandomForest):

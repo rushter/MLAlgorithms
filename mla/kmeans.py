@@ -59,7 +59,7 @@ class KMeans(BaseEstimator):
         else:
             raise ValueError('Unknown type of init parameter')
 
-    def predict(self):
+    def _predict(self, X=None):
         """Perform the clustering on the dataset."""
         self._initialize_cetroids(self.init)
         centroids = self.centroids

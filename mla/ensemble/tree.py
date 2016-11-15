@@ -82,6 +82,8 @@ class Tree(object):
             Maximum depth of the tree.
         minimum_gain : float, default 0.01
             Minimum gain required for splitting.
+        loss : function, default None
+            Loss function for gradient boosting.
         """
 
         if not isinstance(target, dict):
