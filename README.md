@@ -34,7 +34,7 @@ All algorithms are implemented in Python, using numpy, scipy and autograd.
 
 ### How to run examples without installation
         cd MLAlgorithms
-        python -m examples/linear_models
+        python -m examples.linear_models
 
 ### Contributing
 Your contributions are always welcome!
