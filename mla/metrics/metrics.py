@@ -1,6 +1,4 @@
-
 import autograd.numpy as np
-from autograd import grad
 
 EPS = 1e-15
 
@@ -68,9 +66,10 @@ def hinge(actual, predicted):
     return np.mean(np.max(1. - actual * predicted, 0.))
 
 
-def binary_crossentropy(predicted, actual):
+def binary_crossentropy(actual, predicted):
     predicted = np.clip(predicted, EPS, 1 - EPS)
-    return np.mean(-np.sum(actual * np.log(predicted) + (1 - actual) * np.log(1 - predicted)))
+    return np.mean(-np.sum(actual * np.log(predicted) +
+                           (1 - actual) * np.log(1 - predicted)))
 
 
 # aliases
