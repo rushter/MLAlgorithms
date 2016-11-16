@@ -28,7 +28,7 @@ class Tree(object):
         return not bool(self.left_child and self.right_child)
 
     def _find_splits(self, X, y):
-        """Find all possible split-values."""
+        """Find all possible split values."""
 
         # Sort feature set
         df = np.rec.fromarrays([X, y], names='x,y')
@@ -42,7 +42,7 @@ class Tree(object):
         return list(split_values)
 
     def _find_best_split(self, X, target, n_features):
-        """Find best feature and value for split. Greedy algorithm."""
+        """Find best feature and value for a split. Greedy algorithm."""
 
         # Sample random subset of features
         subset = random.sample(list(range(0, X.shape[1])), n_features)
