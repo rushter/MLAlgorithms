@@ -4,6 +4,7 @@ from mla.ensemble import RandomForestClassifier
 from mla.ensemble.gbm import GradientBoostingClassifier
 from mla.linear_models import LogisticRegression
 from mla.metrics import accuracy
+from mla.naive_bayes import NaiveBayesClassifier
 from mla.neuralnet import NeuralNet
 from mla.neuralnet.constraints import MaxNorm
 from mla.neuralnet.layers import Activation, Dense, Dropout
@@ -89,3 +90,8 @@ def test_gbm_classification():
     assert roc_auc_score(y_test, predictions) >= 0.95
 
 
+def test_naive_bayes():
+    model = NaiveBayesClassifier()
+    model.fit(X_train, y_train)
+    predictions = model.predict(X_test)[:, 1]
+    assert roc_auc_score(y_test, predictions) >= 0.95

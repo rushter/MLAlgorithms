@@ -13,6 +13,7 @@ All algorithms are implemented in Python, using numpy, scipy and autograd.
 * [SVM with kernels (Linear, Poly, RBF)] (mla/svm)
 * [K-Means] (mla/kmeans.py)
 * [K-nearest neighbors] (mla/knn.py)
+* [Naive bayes] (mla/naive_bayes.py)
 * [PCA] (mla/pca.py)
 * [Factorization machines] (mla/fm.py)
 * [Gradient Boosting trees (also known as GBDT, GBRT, GBM, XGBoost)] (mla/ensemble/gbm.py)
@@ -22,9 +23,9 @@ All algorithms are implemented in Python, using numpy, scipy and autograd.
 * t-SNE
 * MCMC
 * Word2vec
-* Naive bayes
 * Adaboost
 * HMM
+* Restricted Boltzmann machine
 
 ### Installation
         git clone https://github.com/rushter/MLAlgorithms
