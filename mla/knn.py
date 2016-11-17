@@ -18,7 +18,7 @@ class KNN(BaseEstimator):
         ----------
         k : int, default 5
             The number of neighbors to take into account.
-        distance_func: function, default euclidean distance
+        distance_func : function, default euclidean distance
             A distance function taking two arguments. Any function from
             scipy.spatial.distance will do.
         """
