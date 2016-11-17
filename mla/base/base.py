@@ -43,7 +43,7 @@ class BaseEstimator(object):
                 y = np.array(y)
 
             if y.size == 0:
-                raise ValueError('Number of features must be > 0')
+                raise ValueError('Number of targets must be > 0')
 
         self.y = y
 
