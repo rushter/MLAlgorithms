@@ -24,7 +24,7 @@ class NaiveBayesClassifier(BaseEstimator):
             # Calculate mean, variance, prior for each class
             self._mean[c, :] = X_c.mean(axis=0)
             self._var[c, :] = X_c.var(axis=0)
-            self._priors[c] = X_c.shape[0] / X.shape[0]
+            self._priors[c] = X_c.shape[0] / float(X.shape[0])
 
     def _predict(self, X=None):
         # Apply _predict_proba for each row
