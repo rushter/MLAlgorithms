@@ -32,14 +32,14 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.12,
 
 # All classifiers except convnet, RNN, LSTM.
 
-def test_linear_model_classification():
+def test_linear_model():
     model = LogisticRegression(lr=0.01, max_iters=500, penalty='l1', C=0.01)
     model.fit(X_train, y_train)
     predictions = model.predict(X_test)
     assert roc_auc_score(y_test, predictions) >= 0.95
 
 
-def test_random_forest_classification():
+def test_random_forest():
     model = RandomForestClassifier(n_estimators=10, max_depth=4)
     model.fit(X_train, y_train)
     predictions = model.predict(X_test)[:, 1]
@@ -57,7 +57,7 @@ def test_svm_classification():
         assert accuracy(y_signed_test, predictions) >= 0.8
 
 
-def test_mlp_classification():
+def test_mlp():
     y_train_onehot = one_hot(y_train)
     y_test_onehot = one_hot(y_test)
 
@@ -83,7 +83,7 @@ def test_mlp_classification():
     assert roc_auc_score(y_test_onehot[:, 0], predictions[:, 0]) >= 0.95
 
 
-def test_gbm_classification():
+def test_gbm():
     model = GradientBoostingClassifier(n_estimators=25, max_depth=3,
                                        max_features=5, learning_rate=0.1)
     model.fit(X_train, y_train)
