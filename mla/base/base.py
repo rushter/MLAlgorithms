@@ -51,6 +51,9 @@ class BaseEstimator(object):
         self._setup_input(X, y)
 
     def predict(self, X=None):
+        if not isinstance(X, np.ndarray):
+            X = np.array(X)
+
         if self.X is not None:
             return self._predict(X)
         else:
