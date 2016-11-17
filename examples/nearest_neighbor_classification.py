@@ -1,4 +1,3 @@
-
 try:
     from sklearn.model_selection import train_test_split
 except ImportError:
@@ -9,9 +8,9 @@ from scipy.spatial import distance
 from mla import knn
 from mla.metrics.metrics import accuracy
 
-
-X, y = make_classification(n_samples=100, n_features=5, n_informative=5,
-                           n_redundant=0, n_repeated=0, n_classes=3)
+X, y = make_classification(n_samples=500, n_features=5, n_informative=5,
+                           n_redundant=0, n_repeated=0, n_classes=3,
+                           random_state=1111, class_sep=1.5, )
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1,
                                                     random_state=1111)
