@@ -37,23 +37,19 @@ class NaiveBayesClassifier(BaseEstimator):
         output = []
         for y in range(self.n_classes):
             prior = np.log(self._priors[y])
-            posterior = np.sum([self._pdf(y, d, x) for d in range(self.n_features)])
+            posterior = self._pdf(y, x).sum()
             prediction = prior + posterior
 
             output.append(prediction)
         return output
 
-    def _pdf(self, n_class, n_feature, x):
-        """Calculate probability density function for normal distribution."""
+    def _pdf(self, n_class, x):
+        """Calculate Gaussian PDF for each feature."""
+
         # Take specific values
-        mean = self._mean[n_class, n_feature]
-        var = self._var[n_class, n_feature]
-        x = x[n_feature]
+        mean = self._mean[n_class]
+        var = self._var[n_class]
 
-        # Avoid division by zero
-        if var < 1e-15:
-            return 0.0
-
-        numerator = np.exp(-(float(x) - float(mean)) ** 2 / (2 * var))
+        numerator = np.exp(-(x - mean) ** 2 / (2 * var))
         denominator = np.sqrt(2 * np.pi * var)
         return numerator / denominator
