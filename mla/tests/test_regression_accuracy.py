@@ -10,6 +10,7 @@ from mla.neuralnet import NeuralNet
 from mla.neuralnet.layers import Activation, Dense
 from mla.neuralnet.optimizers import Adam, RMSprop
 from mla.neuralnet.parameters import Parameters
+from mla.knn import KNNRegressor
 
 # Generate a random regression problem
 X, y = make_regression(n_samples=1000, n_features=10,
@@ -44,3 +45,10 @@ def test_mlp():
     model.fit(X_train, y_train)
     predictions = model.predict(X_test)
     assert mean_squared_error(y_test, predictions.flatten()) < 0.25
+
+
+def test_knn():
+    model = KNNRegressor(k=5)
+    model.fit(X_train, y_train)
+    predictions = model.predict(X_test)
+    assert mean_squared_error(y_test, predictions) < 10000
