@@ -2,7 +2,7 @@ from sklearn.metrics import roc_auc_score
 
 from mla.ensemble import RandomForestClassifier
 from mla.ensemble.gbm import GradientBoostingClassifier
-from mla.knn import KNN
+from mla.knn import KNNClassifier
 from mla.linear_models import LogisticRegression
 from mla.metrics import accuracy
 from mla.naive_bayes import NaiveBayesClassifier
@@ -99,7 +99,7 @@ def test_naive_bayes():
 
 
 def test_knn():
-    clf = KNN(k=5)
+    clf = KNNClassifier(k=5)
 
     clf.fit(X_train, y_train)
     predictions = clf.predict(X_test)
