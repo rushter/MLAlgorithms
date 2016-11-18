@@ -1,18 +1,9 @@
 import os
 import numpy as np
-import pandas as pd
 
 
 def get_filename(name):
     return os.path.join(os.path.dirname(__file__), name)
-
-
-def load_boston():
-    df = pd.read_csv(get_filename('data/boston.csv'))
-
-    y = df['medv']
-    df.drop(['medv', 'id'], axis=1, inplace=type)
-    return df.values, y.values
 
 
 def load_mnist():
