@@ -28,11 +28,11 @@ class NaiveBayesClassifier(BaseEstimator):
 
     def _predict(self, X=None):
         # Apply _predict_proba for each row
-        predictions = np.apply_along_axis(self._predict_proba, 1, X)
+        predictions = np.apply_along_axis(self._predict_row, 1, X)
         # Normalize probabilities
         return softmax(predictions)
 
-    def _predict_proba(self, x):
+    def _predict_row(self, x):
         """Predict log likelihood for given row."""
         output = []
         for y in range(self.n_classes):

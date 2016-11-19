@@ -60,9 +60,11 @@ class KMeans(BaseEstimator):
             raise ValueError('Unknown type of init parameter')
 
     def _predict(self, X=None):
-        """Perform the clustering on the dataset."""
+        """Perform clustering on the dataset."""
         self._initialize_cetroids(self.init)
         centroids = self.centroids
+
+        # Optimize clusters
         for _ in range(self.max_iters):
             self._assign(centroids)
             centroids_old = centroids
@@ -95,6 +97,7 @@ class KMeans(BaseEstimator):
             self.clusters[closest].append(row)
 
     def _closest(self, fpoint, centroids):
+        """Find the closest centroid for a point."""
         closest_index = None
         closest_distance = None
         for i, point in enumerate(centroids):
@@ -109,6 +112,7 @@ class KMeans(BaseEstimator):
         return [np.mean(np.take(self.X[:, i], cluster)) for i in range(self.n_features)]
 
     def _dist_from_centers(self):
+        """Calculate distance from centers."""
         return np.array([min([euclidean_distance(x, c) for c in self.centroids]) for x in self.X])
 
     def _choose_next_center(self):
@@ -120,7 +124,11 @@ class KMeans(BaseEstimator):
         return self.X[ind]
 
     def _is_converged(self, centroids_old, centroids):
-        return True if sum([euclidean_distance(centroids_old[i], centroids[i]) for i in range(self.K)]) == 0 else False
+        """Check if the distance between old and new centroids is zero."""
+        distance = 0
+        for i in range(self.K):
+            distance += euclidean_distance(centroids_old[i], centroids[i])
+        return distance == 0
 
     def plot(self, data=None):
         sns.set(style="white")
