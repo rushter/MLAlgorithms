@@ -27,18 +27,17 @@ class Tree(object):
     def is_terminal(self):
         return not bool(self.left_child and self.right_child)
 
-    def _find_splits(self, X, y):
+    def _find_splits(self, X):
         """Find all possible split values."""
-
-        # Sort feature set
-        df = np.rec.fromarrays([X, y], names='x,y')
-        df.sort(order='x')
-
         split_values = set()
-        for i in range(1, X.shape[0]):
-            if df.y[i - 1] != df.y[i]:
-                average = (df.x[i - 1] + df.x[i]) / 2.0
-                split_values.add(average)
+
+        # Get unique values in a sorted order
+        x_unique = list(np.unique(X))
+        for i in range(1, len(x_unique)):
+            # Find a point between two values
+            average = (x_unique[i - 1] + x_unique[i]) / 2.0
+            split_values.add(average)
+
         return list(split_values)
 
     def _find_best_split(self, X, target, n_features):
@@ -49,7 +48,7 @@ class Tree(object):
         max_gain, max_col, max_val = None, None, None
 
         for column in subset:
-            split_values = self._find_splits(X[:, column], target['y'])
+            split_values = self._find_splits(X[:, column])
             for value in split_values:
                 if self.loss is None:
                     # Random forest
@@ -112,6 +111,7 @@ class Tree(object):
             # Split dataset
             left_X, right_X, left_target, right_target = split_dataset(X, target, column, value)
 
+            # Grow left and right child
             self.left_child = Tree(self.regression, self.criterion)
             self.left_child.train(left_X, left_target, max_features, min_samples_split, max_depth - 1,
                                   minimum_gain, loss)
@@ -137,6 +137,7 @@ class Tree(object):
                 self.outcome = stats.itemfreq(targets['y'])[:, 1] / float(targets['y'].shape[0])
 
     def predict_row(self, row):
+        """Predict single row."""
         if not self.is_terminal:
             if row[self.column_index] < self.threshold:
                 return self.left_child.predict_row(row)

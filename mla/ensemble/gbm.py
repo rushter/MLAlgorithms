@@ -38,7 +38,7 @@ class Loss:
         return pred
 
     def gain(self, actual, predicted):
-        """Gain for split finding."""
+        """Calculate gain for split search."""
         nominator = self.grad(actual, predicted).sum() ** 2
         denominator = (self.hess(actual, predicted).sum() + self.regularization)
         return 0.5 * (nominator / denominator)
@@ -70,7 +70,7 @@ class LogisticLoss(Loss):
 
 
 class GradientBoosting(BaseEstimator):
-    """Gradient boosting trees with taylor expansion approximation (as in xgboost)."""
+    """Gradient boosting trees with Taylor's expansion approximation (as in xgboost)."""
 
     def __init__(self, n_estimators, learning_rate=0.1, max_features=10, max_depth=2, min_samples_split=10):
         self.min_samples_split = min_samples_split
