@@ -16,9 +16,10 @@ class Parameters(object):
             Initial values for bias.
         regularizers : dict
             Weight regularizers.
-            {'W' : L2()}
+            >>> {'W' : L2()}
         constraints : dict
-            Weight constraints. {'b' : MaxNorm()}
+            Weight constraints.
+            >>> {'b' : MaxNorm()}
         """
         if constraints is None:
             self.constraints = {}
@@ -60,6 +61,7 @@ class Parameters(object):
             self._params[name] = self.constraints[name].clip(self._params[name])
 
     def update_grad(self, name, value):
+        """Update gradient values."""
         self._grads[name] = value
 
         if name in self.regularizers:

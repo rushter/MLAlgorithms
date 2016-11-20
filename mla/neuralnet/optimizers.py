@@ -19,10 +19,12 @@ class Optimizer(object):
         for i in range(network.max_epochs):
             if network.shuffle:
                 network.shuffle_dataset()
+
             start_time = time.time()
             loss = self.train_epoch(network)
             loss_history.append(loss)
             msg = "Epoch:%s, train loss: %s" % (i, loss)
+
             if network.log_metric:
                 msg += ', train %s: %s' % (network.metric_name, network.error())
             msg += ', elapsed: %s sec.' % (time.time() - start_time)
@@ -30,18 +32,22 @@ class Optimizer(object):
         return loss_history
 
     def update(self, network):
+        """Performs an update of parameters."""
         raise NotImplementedError
 
     def train_epoch(self, network):
         self._setup(network)
         losses = []
 
+        # Create batch iterator
         X_batch = batch_iterator(network.X, network.batch_size)
         y_batch = batch_iterator(network.y, network.batch_size)
+
         for X, y in tqdm(zip(X_batch, y_batch), 'Epoch progress'):
             loss = np.mean(network.update(X, y))
             self.update(network)
             losses.append(loss)
+
         epoch_loss = np.mean(losses)
         return epoch_loss
 

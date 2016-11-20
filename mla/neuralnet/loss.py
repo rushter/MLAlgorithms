@@ -4,7 +4,7 @@ categorical_crossentropy = logloss
 
 
 def get_loss(name):
-    """Return loss function by name"""
+    """Returns loss function by the name."""
 
     try:
         return globals()[name]

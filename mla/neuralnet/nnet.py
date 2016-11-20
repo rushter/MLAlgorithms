@@ -42,7 +42,8 @@ class NeuralNet(BaseEstimator):
         self.training = False
         self._initialized = False
 
-    def _setup_layers(self, x_shape, ):
+    def _setup_layers(self, x_shape):
+        """Initialize model's layers."""
         x_shape = list(x_shape)
         x_shape[0] = self.batch_size
 
@@ -55,6 +56,8 @@ class NeuralNet(BaseEstimator):
         logging.info('Total parameters: %s' % self.n_params)
 
     def _find_bprop_entry(self):
+        """Find entry layer for back propagation."""
+
         if len(self.layers) > 0 and not hasattr(self.layers[-1], 'parameters'):
             return -1
         return len(self.layers)
@@ -73,7 +76,10 @@ class NeuralNet(BaseEstimator):
         self.is_training = False
 
     def update(self, X, y):
+        # Forward pass
         y_pred = self.fprop(X)
+
+        # Backward pass
         grad = self.loss_grad(y, y_pred)
         for layer in reversed(self.layers[:self.bprop_entry]):
             grad = layer.backward_pass(grad)
@@ -100,14 +106,18 @@ class NeuralNet(BaseEstimator):
 
     @property
     def parameters(self):
+        """Returns a list of all parameters."""
         params = []
         for layer in self.parametric_layers:
             params.append(layer.parameters)
         return params
 
     def error(self, X=None, y=None):
+        """Calculate an error for given examples."""
         training_phase = self.is_training
         if training_phase:
+            # Temporally disable training.
+            # Some layers work differently while training (e.g. Dropout).
             self.is_training = False
         if X is None and y is None:
             y_pred = self._predict(self.X)
@@ -131,6 +141,7 @@ class NeuralNet(BaseEstimator):
                 layer.is_training = train
 
     def shuffle_dataset(self):
+        """Shuffle rows in the dataset."""
         n_samples = self.X.shape[0]
         indices = np.arange(n_samples)
         np.random.shuffle(indices)
@@ -139,10 +150,12 @@ class NeuralNet(BaseEstimator):
 
     @property
     def n_layers(self):
+        """Returns the number of layers."""
         return self._n_layers
 
     @property
     def n_params(self):
+        """Return the number of trainable parameters."""
         return sum([layer.parameters.n_params for layer in self.parametric_layers])
 
     def reset(self):

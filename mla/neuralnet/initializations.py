@@ -1,6 +1,10 @@
 import numpy as np
 
+"""
+References:
+http://jmlr.org/proceedings/papers/v9/glorot10a/glorot10a.pdf
 
+"""
 def normal(shape, scale=0.5):
     return np.random.normal(size=shape, scale=scale)
 
@@ -62,7 +66,7 @@ def he_uniform(shape, **kwargs):
 
 
 def get_initializer(name):
-    """Return initialization function by name"""
+    """Returns initialization function by the name."""
     try:
         return globals()[name]
     except:

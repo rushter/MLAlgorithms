@@ -1,7 +1,10 @@
 import autograd.numpy as np
 
+"""
+References:
+https://en.wikipedia.org/wiki/Activation_function
+"""
 
-# https://en.wikipedia.org/wiki/Activation_function
 
 def sigmoid(z):
     return 1.0 / (1.0 + np.exp(-z))
