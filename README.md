@@ -37,5 +37,11 @@ All algorithms are implemented in Python, using numpy, scipy and autograd.
         cd MLAlgorithms
         python -m examples.linear_models
 
+### How to run examples within Docker
+        cd MLAlgorithms
+        docker build -t mlalgorithms .
+        docker run --rm -it mlalgorithms bash
+        python -m examples.linear_models
+
 ### Contributing
 Your contributions are always welcome!
