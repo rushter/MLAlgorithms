@@ -1,5 +1,6 @@
 from sklearn.metrics import roc_auc_score
 
+from mla.pca import PCA
 from mla.ensemble import RandomForestClassifier
 
 try:
@@ -9,16 +10,24 @@ except ImportError:
 from sklearn.datasets import make_classification
 
 
-# Generate a random regression problem
-X, y = make_classification(n_samples=750, n_features=10,
-                           n_informative=8, random_state=1111,
-                           n_classes=2, class_sep=2.5, n_redundant=0)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.12,
-                                                    random_state=1111)
-
+# Generate a random binary classification problem.
+X, y = make_classification(n_samples=1000, n_features=100, n_informative=75,
+                           random_state=1111, n_classes=2, class_sep=2.5, )
 
 def test_random_forest():
+
+	
+	X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25,
+                                                        random_state=1111)
+	p = PCA(100, solver='eigen')
+    
+    # fit PCA with training data, and not the entire dataset
+    p.fit(X_train) 
+    X_train_reduced = p.transform(X_train)
+    X_test_reduced = p.transform(X_test)
+
     model = RandomForestClassifier(n_estimators=10, max_depth=4)
-    model.fit(X_train, y_train)
-    predictions = model.predict(X_test)[:, 1]
-    assert roc_auc_score(y_test, predictions) >= 0.95
+    model.fit(X_train_reduced, y_train)
+    predictions = model.predict(X_test_reduced)[:, 1]
+    print roc_auc_score(y_test, predictions)
+    assert roc_auc_score(y_test, predictions) >= 0.80
