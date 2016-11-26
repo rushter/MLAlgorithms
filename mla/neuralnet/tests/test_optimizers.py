@@ -40,22 +40,22 @@ def clasifier(optimizer):
 
 
 def test_adadelta():
-    assert clasifier(Adadelta()) > 0.95
+    assert clasifier(Adadelta()) > 0.9
 
 
 def test_adam():
-    assert clasifier(Adam()) > 0.95
+    assert clasifier(Adam()) > 0.9
 
 
 def test_rmsprop():
-    assert clasifier(RMSprop()) > 0.95
+    assert clasifier(RMSprop()) > 0.9
 
 
 def test_adagrad():
-    assert clasifier(Adagrad()) > 0.95
+    assert clasifier(Adagrad()) > 0.9
 
 
 def test_sgd():
-    assert clasifier(SGD(learning_rate=0.0001)) > 0.95
-    assert clasifier(SGD(learning_rate=0.0001, nesterov=True, momentum=0.9)) > 0.95
-    assert clasifier(SGD(learning_rate=0.0001, nesterov=False, momentum=0.0)) > 0.95
+    assert clasifier(SGD(learning_rate=0.0001)) > 0.9
+    assert clasifier(SGD(learning_rate=0.0001, nesterov=True, momentum=0.9)) > 0.9
+    assert clasifier(SGD(learning_rate=0.0001, nesterov=False, momentum=0.0)) > 0.9
