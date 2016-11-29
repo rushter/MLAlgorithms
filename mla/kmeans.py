@@ -130,17 +130,22 @@ class KMeans(BaseEstimator):
             distance += euclidean_distance(centroids_old[i], centroids[i])
         return distance == 0
 
-    def plot(self, data=None):
+    def plot(self, ax=None, holdon=False):
         sns.set(style="white")
 
-        if data is None:
-            data = self.X
+        data = self.X
+
+        if ax is None:
+            _, ax = plt.subplots()
+
+
 
         for i, index in enumerate(self.clusters):
             point = np.array(data[index]).T
-            plt.scatter(*point, c=sns.color_palette("hls", self.K + 1)[i])
+            ax.scatter(*point, c=sns.color_palette("hls", self.K + 1)[i])
 
         for point in self.centroids:
-            plt.scatter(*point, marker='x', linewidths=10)
+            ax.scatter(*point, marker='x', linewidths=10)
 
-        plt.show()
+        if not holdon:
+            plt.show()

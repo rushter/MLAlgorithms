@@ -49,7 +49,7 @@ class GaussianMixture(BaseEstimator):
         '''Perform Expectation–Maximization (EM) until converged.'''
         self._setup_input(X, y)
         self._initialize()
-        for i in range(self.max_iters):
+        for _ in range(self.max_iters):
             self._E_step()
             self._M_step()
             if self._is_converged():
