@@ -12,6 +12,7 @@ All algorithms are implemented in Python, using numpy, scipy and autograd.
 * [Random Forests] (mla/ensemble/random_forest.py)
 * [SVM with kernels (Linear, Poly, RBF)] (mla/svm)
 * [K-Means] (mla/kmeans.py)
+* [Gaussian Mixture Model] (mla/gaussian_mixture.py)
 * [K-nearest neighbors] (mla/knn.py)
 * [Naive bayes] (mla/naive_bayes.py)
 * [PCA] (mla/pca.py)
