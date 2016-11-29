@@ -31,11 +31,9 @@ def KMeans_and_GMM(K):
     # KMeans
     kmeans = KMeans(K=K, init='++')
     kmeans.fit(X)
-    y_kmeans = kmeans.predict()
-    c_kmeans = np.array(kmeans.centroids)
-    axes[1].scatter(X[:, 0], X[:, 1], c=[COLOR[int(assignment)] for assignment in y_kmeans])
-    axes[1].scatter(c_kmeans[:, 0], c_kmeans[:, 1], c=COLOR[:K], marker="o", s=500)
+    kmeans.predict()
     axes[1].set_title("KMeans")
+    kmeans.plot(ax=axes[1], holdon=True)
 
     # Gaussian Mixture
     gmm = GaussianMixture(K=K, init='kmeans')
