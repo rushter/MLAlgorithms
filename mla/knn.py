@@ -24,6 +24,9 @@ class KNNBase(BaseEstimator):
         self.k = None if k == 0 else k  # l[:None] returns the whole list
         self.distance_func = distance_func
 
+    def aggregate(self, neighbors_targets):
+        raise NotImplementedError()
+
     def _predict(self, X=None):
 
         predictions = [self._predict_x(x) for x in X]
