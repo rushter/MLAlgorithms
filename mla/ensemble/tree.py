@@ -97,6 +97,9 @@ class Tree(object):
             assert (X.shape[0] > min_samples_split)
             assert (max_depth > 0)
 
+            if max_features is None:
+                max_features = X.shape[1]
+                
             column, value, gain = self._find_best_split(X, target, max_features)
             assert gain is not None
             if self.regression:
