@@ -10,13 +10,14 @@ All algorithms are implemented in Python, using numpy, scipy and autograd.
 * [Deep learning (MLP, CNN, RNN, LSTM)] (mla/neuralnet)
 * [Linear regression, logistic regression] (mla/linear_models.py)
 * [Random Forests] (mla/ensemble/random_forest.py)
-* [SVM with kernels (Linear, Poly, RBF)] (mla/svm)
+* [Support vector machine (SVM) with kernels (Linear, Poly, RBF)] (mla/svm)
 * [K-Means] (mla/kmeans.py)
 * [Gaussian Mixture Model] (mla/gaussian_mixture.py)
 * [K-nearest neighbors] (mla/knn.py)
 * [Naive bayes] (mla/naive_bayes.py)
-* [PCA] (mla/pca.py)
+* [Principal component analysis (PCA)] (mla/pca.py)
 * [Factorization machines] (mla/fm.py)
+* [Restricted Boltzmann machine (RBM)] (mla/rbm.py)
 * [Gradient Boosting trees (also known as GBDT, GBRT, GBM, XGBoost)] (mla/ensemble/gbm.py)
 
 
@@ -26,7 +27,6 @@ All algorithms are implemented in Python, using numpy, scipy and autograd.
 * Word2vec
 * Adaboost
 * HMM
-* Restricted Boltzmann machine
 
 ### Installation
         git clone https://github.com/rushter/MLAlgorithms

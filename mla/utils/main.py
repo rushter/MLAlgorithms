@@ -8,6 +8,7 @@ def one_hot(y):
 
 
 def batch_iterator(X, batch_size=64):
+    """Splits X into equal sized chunks."""
     n_samples = X.shape[0]
     n_batches = n_samples // batch_size
     batch_end = 0
