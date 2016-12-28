@@ -18,11 +18,11 @@ All algorithms are implemented in Python, using numpy, scipy and autograd.
 * [Principal component analysis (PCA)] (mla/pca.py)
 * [Factorization machines] (mla/fm.py)
 * [Restricted Boltzmann machine (RBM)] (mla/rbm.py)
+* [t-Distributed Stochastic Neighbor Embedding (t-SNE)] (mla/tsne.py)
 * [Gradient Boosting trees (also known as GBDT, GBRT, GBM, XGBoost)] (mla/ensemble/gbm.py)
 
 
 ### TODO:
-* t-SNE
 * MCMC
 * Word2vec
 * Adaboost
