@@ -22,12 +22,6 @@ All algorithms are implemented in Python, using numpy, scipy and autograd.
 * [Gradient Boosting trees (also known as GBDT, GBRT, GBM, XGBoost)] (mla/ensemble/gbm.py)
 
 
-### TODO:
-* MCMC
-* Word2vec
-* Adaboost
-* HMM
-
 ### Installation
         git clone https://github.com/rushter/MLAlgorithms
         cd MLAlgorithms
@@ -45,4 +39,7 @@ All algorithms are implemented in Python, using numpy, scipy and autograd.
         python -m examples.linear_models
 
 ### Contributing
-Your contributions are always welcome!
+
+Your contributions are always welcome!  
+Feel free to improve existing code, documentation or implement new algorithm.  
+Please open an issue to propose your changes if they big are enough.  
