@@ -20,6 +20,7 @@ All algorithms are implemented in Python, using numpy, scipy and autograd.
 * [Restricted Boltzmann machine (RBM)] (mla/rbm.py)
 * [t-Distributed Stochastic Neighbor Embedding (t-SNE)] (mla/tsne.py)
 * [Gradient Boosting trees (also known as GBDT, GBRT, GBM, XGBoost)] (mla/ensemble/gbm.py)
+* [Reinforcement learning (Deep Q learning)] (mla/rl)
 
 
 ### Installation
