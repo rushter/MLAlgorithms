@@ -23,12 +23,12 @@ class Optimizer(object):
             start_time = time.time()
             loss = self.train_epoch(network)
             loss_history.append(loss)
-            msg = "Epoch:%s, train loss: %s" % (i, loss)
-
-            if network.log_metric:
-                msg += ', train %s: %s' % (network.metric_name, network.error())
-            msg += ', elapsed: %s sec.' % (time.time() - start_time)
-            logging.info(msg)
+            if network.verbose:
+                msg = "Epoch:%s, train loss: %s" % (i, loss)
+                if network.log_metric:
+                    msg += ', train %s: %s' % (network.metric_name, network.error())
+                msg += ', elapsed: %s sec.' % (time.time() - start_time)
+                logging.info(msg)
         return loss_history
 
     def update(self, network):
@@ -36,14 +36,17 @@ class Optimizer(object):
         raise NotImplementedError
 
     def train_epoch(self, network):
-        self._setup(network)
         losses = []
 
         # Create batch iterator
         X_batch = batch_iterator(network.X, network.batch_size)
         y_batch = batch_iterator(network.y, network.batch_size)
 
-        for X, y in tqdm(zip(X_batch, y_batch), 'Epoch progress'):
+        batch = zip(X_batch, y_batch)
+        if network.verbose:
+            batch = tqdm(batch)
+
+        for X, y in batch:
             loss = np.mean(network.update(X, y))
             self.update(network)
             losses.append(loss)
@@ -51,7 +54,14 @@ class Optimizer(object):
         epoch_loss = np.mean(losses)
         return epoch_loss
 
-    def _setup(self, network):
+    def train_batch(self, network, X, y):
+        loss = np.mean(network.update(X, y))
+        self.update(network)
+        return loss
+
+    def setup(self, network):
+        """Creates additional variables.
+        Note: Must be called before optimization process."""
         raise NotImplementedError
 
 
@@ -79,7 +89,7 @@ class SGD(Optimizer):
                 layer.parameters.step(n, update)
         self.iteration += 1
 
-    def _setup(self, network):
+    def setup(self, network):
         self.velocity = defaultdict(dict)
         for i, layer in enumerate(network.parametric_layers):
             for n in layer.parameters.keys():
@@ -99,7 +109,7 @@ class Adagrad(Optimizer):
                 step = self.lr * grad / (np.sqrt(self.accu[i][n]) + self.eps)
                 layer.parameters.step(n, -step)
 
-    def _setup(self, network):
+    def setup(self, network):
         # Accumulators
         self.accu = defaultdict(dict)
         for i, layer in enumerate(network.parametric_layers):
@@ -125,7 +135,7 @@ class Adadelta(Optimizer):
                 # Update delta accumulator
                 self.d_accu[i][n] = self.rho * self.d_accu[i][n] + (1. - self.rho) * step ** 2
 
-    def _setup(self, network):
+    def setup(self, network):
         # Accumulators
         self.accu = defaultdict(dict)
         self.d_accu = defaultdict(dict)
@@ -149,7 +159,7 @@ class RMSprop(Optimizer):
                 step = self.lr * grad / (np.sqrt(self.accu[i][n]) + self.eps)
                 layer.parameters.step(n, -step)
 
-    def _setup(self, network):
+    def setup(self, network):
         # Accumulators
         self.accu = defaultdict(dict)
         for i, layer in enumerate(network.parametric_layers):
@@ -179,7 +189,7 @@ class Adam(Optimizer):
                 layer.parameters.step(n, -step)
         self.t += 1
 
-    def _setup(self, network):
+    def setup(self, network):
         # Accumulators
         self.ms = defaultdict(dict)
         self.vs = defaultdict(dict)

@@ -19,10 +19,14 @@ https://github.com/andersbll/deeppy
 
 
 class NeuralNet(BaseEstimator):
-    def __init__(self, layers, optimizer, loss, max_epochs=10, batch_size=64, random_seed=33, metric='mse',
-                 shuffle=True):
+    fit_required = False
+
+    def __init__(self, layers, optimizer, loss, max_epochs=10, batch_size=64, metric='mse',
+                 shuffle=False, verbose=True):
+        self.verbose = verbose
         self.shuffle = shuffle
         self.optimizer = optimizer
+
         self.loss = get_loss(loss)
 
         # TODO: fix
@@ -31,7 +35,6 @@ class NeuralNet(BaseEstimator):
         else:
             self.loss_grad = elementwise_grad(self.loss, 1)
         self.metric = get_metric(metric)
-        self.random_seed = random_seed
         self.layers = layers
         self.batch_size = batch_size
         self.max_epochs = max_epochs
@@ -52,6 +55,8 @@ class NeuralNet(BaseEstimator):
             x_shape = layer.shape(x_shape)
 
         self._n_layers = len(self.layers)
+        # Setup optimizer
+        self.optimizer.setup(self)
         self._initialized = True
         logging.info('Total parameters: %s' % self.n_params)
 
@@ -63,12 +68,13 @@ class NeuralNet(BaseEstimator):
         return len(self.layers)
 
     def fit(self, X, y=None):
+        if not self._initialized:
+            self._setup_layers(X.shape)
+
         if y.ndim == 1:
             # Reshape vector to matrix
             y = y[:, np.newaxis]
         self._setup_input(X, y)
-        if not self._initialized:
-            self._setup_layers(X.shape)
 
         self.is_training = True
         # Pass neural network instance to an optimizer
@@ -92,6 +98,9 @@ class NeuralNet(BaseEstimator):
         return X
 
     def _predict(self, X=None):
+        if not self._initialized:
+            self._setup_layers(X.shape)
+
         y = []
         X_batch = batch_iterator(X, self.batch_size)
         for Xb in X_batch:
