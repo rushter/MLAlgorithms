@@ -20,7 +20,7 @@ References:
 class DQN(object):
     def __init__(self, n_episodes=500, gamma=0.99, batch_size=32, epsilon=1., decay=0.005, min_epsilon=0.1,
                  memory_limit=500):
-        """Deep Q learning implementation
+        """Deep Q learning implementation.
 
         Parameters
         ----------
@@ -77,9 +77,11 @@ class DQN(object):
                     # Exploitation
                     action = np.argmax(self.model.predict(state[np.newaxis, :])[0])
 
+                # Run one timestep of the environment
                 new_state, reward, done, _ = self.env.step(action)
                 self.replay.append([state, action, reward, new_state, done])
 
+                # Sample batch from experience replay
                 batch_size = min(len(self.replay), self.batch_size)
                 batch = random.sample(self.replay, batch_size)
 
@@ -92,6 +94,7 @@ class DQN(object):
                 Q = self.model.predict(states)
                 new_Q = self.model.predict(new_states)
 
+                # Construct training data
                 for i in range(batch_size):
                     state_r, action_r, reward_r, new_state_r, done_r = batch[i]
                     target = Q[i]
@@ -114,6 +117,7 @@ class DQN(object):
                     # Exit from current episode
                     break
 
+            # Remove old entries from replay memory
             if len(self.replay) > self.memory_limit:
                 self.replay.pop(0)
 
