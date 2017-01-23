@@ -13,8 +13,10 @@ class NaiveBayesClassifier(BaseEstimator):
         # Check target labels
         assert list(np.unique(y)) == [0, 1]
 
+        # Mean and variance for each class and feature combination
         self._mean = np.zeros((self.n_classes, self.n_features), dtype=np.float64)
         self._var = np.zeros((self.n_classes, self.n_features), dtype=np.float64)
+
         self._priors = np.zeros(self.n_classes, dtype=np.float64)
 
         for c in range(self.n_classes):
@@ -29,7 +31,8 @@ class NaiveBayesClassifier(BaseEstimator):
     def _predict(self, X=None):
         # Apply _predict_proba for each row
         predictions = np.apply_along_axis(self._predict_row, 1, X)
-        # Normalize probabilities
+
+        # Normalize probabilities so that each row will sum up to 1.0
         return softmax(predictions)
 
     def _predict_row(self, x):
@@ -46,7 +49,6 @@ class NaiveBayesClassifier(BaseEstimator):
     def _pdf(self, n_class, x):
         """Calculate Gaussian PDF for each feature."""
 
-        # Take specific values
         mean = self._mean[n_class]
         var = self._var[n_class]
 

@@ -115,8 +115,8 @@ class SVM(BaseEstimator):
         return self._predict_row(self.X[i]) - self.y[i]
 
     def _find_bounds(self, i, j):
-        """Find bounds L and H such that L <= alpha <= H.
-        alpha must satisfy the constraint 0 <= αlpha <= C.
+        """Find L and H such that L <= alpha <= H.
+        Also, alpha must satisfy the constraint 0 <= αlpha <= C.
         """
         if self.y[i] != self.y[j]:
             L = max(0, self.alpha[j] - self.alpha[i])
