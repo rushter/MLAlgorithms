@@ -40,7 +40,7 @@ class NaiveBayesClassifier(BaseEstimator):
         output = []
         for y in range(self.n_classes):
             prior = np.log(self._priors[y])
-            posterior = self._pdf(y, x).sum()
+            posterior = np.log(self._pdf(y, x)).sum()
             prediction = prior + posterior
 
             output.append(prediction)
