@@ -46,7 +46,7 @@ class KMeans(BaseEstimator):
         self.centroids = []
         self.init = init
 
-    def _initialize_cetroids(self, init):
+    def _initialize_centroids(self, init):
         """Set the initial centroids."""
 
         if init == 'random':
@@ -61,7 +61,7 @@ class KMeans(BaseEstimator):
 
     def _predict(self, X=None):
         """Perform clustering on the dataset."""
-        self._initialize_cetroids(self.init)
+        self._initialize_centroids(self.init)
         centroids = self.centroids
 
         # Optimize clusters
