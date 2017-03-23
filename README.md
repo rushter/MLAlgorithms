@@ -7,20 +7,20 @@ The code is much easier to follow than the optimized libraries and easier to pla
 All algorithms are implemented in Python, using numpy, scipy and autograd.  
 
 ### Implemented:
-* [Deep learning (MLP, CNN, RNN, LSTM)] (mla/neuralnet)
-* [Linear regression, logistic regression] (mla/linear_models.py)
-* [Random Forests] (mla/ensemble/random_forest.py)
-* [Support vector machine (SVM) with kernels (Linear, Poly, RBF)] (mla/svm)
-* [K-Means] (mla/kmeans.py)
-* [Gaussian Mixture Model] (mla/gaussian_mixture.py)
-* [K-nearest neighbors] (mla/knn.py)
-* [Naive bayes] (mla/naive_bayes.py)
-* [Principal component analysis (PCA)] (mla/pca.py)
-* [Factorization machines] (mla/fm.py)
-* [Restricted Boltzmann machine (RBM)] (mla/rbm.py)
-* [t-Distributed Stochastic Neighbor Embedding (t-SNE)] (mla/tsne.py)
-* [Gradient Boosting trees (also known as GBDT, GBRT, GBM, XGBoost)] (mla/ensemble/gbm.py)
-* [Reinforcement learning (Deep Q learning)] (mla/rl)
+* [Deep learning (MLP, CNN, RNN, LSTM)](mla/neuralnet)
+* [Linear regression, logistic regression](mla/linear_models.py)
+* [Random Forests](mla/ensemble/random_forest.py)
+* [Support vector machine (SVM) with kernels (Linear, Poly, RBF)](mla/svm)
+* [K-Means](mla/kmeans.py)
+* [Gaussian Mixture Model](mla/gaussian_mixture.py)
+* [K-nearest neighbors](mla/knn.py)
+* [Naive bayes](mla/naive_bayes.py)
+* [Principal component analysis (PCA)](mla/pca.py)
+* [Factorization machines](mla/fm.py)
+* [Restricted Boltzmann machine (RBM)](mla/rbm.py)
+* [t-Distributed Stochastic Neighbor Embedding (t-SNE)](mla/tsne.py)
+* [Gradient Boosting trees (also known as GBDT, GBRT, GBM, XGBoost)](mla/ensemble/gbm.py)
+* [Reinforcement learning (Deep Q learning)](mla/rl)
 
 
 ### Installation
