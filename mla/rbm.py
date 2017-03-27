@@ -15,7 +15,6 @@ A Practical Guide to Training Restricted Boltzmann Machines https://www.cs.toron
 """
 
 
-# Warning: It's untested and unfinished implementation.
 
 class RBM(BaseEstimator):
     y_required = False
