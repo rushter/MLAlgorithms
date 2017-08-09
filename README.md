@@ -43,4 +43,4 @@ All algorithms are implemented in Python, using numpy, scipy and autograd.
 
 Your contributions are always welcome!  
 Feel free to improve existing code, documentation or implement new algorithm.  
-Please open an issue to propose your changes if they big are enough.  
+Please open an issue to propose your changes if they are big enough.  
