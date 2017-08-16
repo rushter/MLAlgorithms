@@ -22,8 +22,9 @@ def linear(z):
 
 def softplus(z):
     """Smooth relu."""
-    # Avoid numerical overflow by putting possible inf into denominator position
-    return z + np.log(1 + 1 / np.exp(z))
+    # Avoid numerical overflow, see:
+    # https://docs.scipy.org/doc/numpy/reference/generated/numpy.logaddexp.html
+    return np.logaddexp(0.0, z)
 
 
 def softsign(z):
