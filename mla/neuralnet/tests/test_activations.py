@@ -20,8 +20,6 @@ def test_softplus():
       z_max
     ])
 
-    outputs = np.array([0.69314718,  1.31326169,  0.31326169, 0.0, z_max])
-
     assert np.allclose(outputs, softplus(inputs))
 
 
