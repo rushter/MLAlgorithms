@@ -48,9 +48,9 @@ class BasicRegression(BaseEstimator):
     def _add_penalty(self, loss, w):
         """Apply regularization to the loss."""
         if self.penalty == "l1":
-            loss += self.C * np.abs(w[:-1]).sum()
+            loss += self.C * np.abs(w[1:]).sum()
         elif self.penalty == "l2":
-            loss += (0.5 * self.C) * (w[:-1] ** 2).mean()
+            loss += (0.5 * self.C) * (w[1:] ** 2).mean()
         return loss
 
     def _cost(self, X, y, theta):
