@@ -22,7 +22,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25,
 
 
 def test_linear():
-    model = LinearRegression(lr=0.01, max_iters=2000, penalty='l2', C=0.03)
+    model = LinearRegression(lr=0.01, max_iters=2000, penalty='l2', C=0.003)
     model.fit(X_train, y_train)
     predictions = model.predict(X_test)
     assert mean_squared_error(y_test, predictions) < 0.25
