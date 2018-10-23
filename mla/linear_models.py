@@ -87,10 +87,9 @@ class BasicRegression(BaseEstimator):
     def _gradient_descent(self):
         theta = self.theta
         errors = [self._cost(self.X, self.y, theta)]
-
+        # Get derivative of the loss function
+        cost_d = grad(self._loss)
         for i in range(1, self.max_iters + 1):
-            # Get derivative of the loss function
-            cost_d = grad(self._loss)
             # Calculate gradient and update theta
             delta = cost_d(theta)
             theta -= self.lr * delta
