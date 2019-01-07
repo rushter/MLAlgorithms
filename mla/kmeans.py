@@ -117,10 +117,9 @@ class KMeans(BaseEstimator):
 
     def _choose_next_center(self):
         distances = self._dist_from_centers()
-        probs = distances / distances.sum()
-        cumprobs = probs.cumsum()
-        r = random.random()
-        ind = np.where(cumprobs >= r)[0][0]
+        squared_distances = distances**2
+        probs = squared_distances/squared_distances.sum()
+        ind = np.random.choice(self.X.shape[0], 1, p=probs)[0]
         return self.X[ind]
 
     def _is_converged(self, centroids_old, centroids):
