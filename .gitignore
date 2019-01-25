@@ -4,3 +4,4 @@ dist/
 mla.egg-info/
 .cache
 *.swp
+.idea
