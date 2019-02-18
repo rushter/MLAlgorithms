@@ -2,6 +2,10 @@ from mla.neuralnet.layers import Layer, PhaseMixin, ParamMixin
 from mla.neuralnet.parameters import Parameters
 import numpy as np
 
+"""
+References:
+https://kratzert.github.io/2016/02/12/understanding-the-gradient-flow-through-the-batch-normalization-layer.html
+"""
 
 class BatchNormalization(Layer, ParamMixin, PhaseMixin):
     def __init__(self, momentum=0.9, eps=1e-5, parameters=None):
