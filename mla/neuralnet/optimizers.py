@@ -44,7 +44,7 @@ class Optimizer(object):
 
         batch = zip(X_batch, y_batch)
         if network.verbose:
-            batch = tqdm(batch)
+            batch = tqdm(batch, total=int(np.ceil(network.n_samples/network.batch_size)))
 
         for X, y in batch:
             loss = np.mean(network.update(X, y))
