@@ -127,7 +127,7 @@ class LogisticRegression(BasicRegression):
 
     @staticmethod
     def sigmoid(x):
-        return 0.5 * (np.tanh(x) + 1)
+        return 0.5 * (np.tanh(0.5 * x) + 1)
 
     def _predict(self, X=None):
         X = self._add_intercept(X)
