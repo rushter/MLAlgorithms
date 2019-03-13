@@ -118,7 +118,7 @@ class DQN(object):
                     break
 
             # Remove old entries from replay memory
-            if len(self.replay) > self.memory_limit:
+            while len(self.replay) > self.memory_limit:
                 self.replay.pop(0)
 
             self.epsilon = self.min_epsilon + (1.0 - self.min_epsilon) * np.exp(-self.decay * ep)
