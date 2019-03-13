@@ -27,7 +27,7 @@ All algorithms are implemented in Python, using numpy, scipy and autograd.
         git clone https://github.com/rushter/MLAlgorithms
         cd MLAlgorithms
         pip install scipy numpy
-        pip install .
+        python setup.py develop
 
 ### How to run examples without installation
         cd MLAlgorithms
