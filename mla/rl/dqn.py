@@ -141,3 +141,4 @@ class DQN(object):
                 if done:
                     break
             logger.info('Episode: %s, reward %s' % (i, total_reward))
+        self.env.close()
