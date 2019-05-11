@@ -1,4 +1,5 @@
 import numpy as np
+
 # logistic function
 from scipy.special import expit
 
@@ -40,7 +41,7 @@ class Loss:
     def gain(self, actual, predicted):
         """Calculate gain for split search."""
         nominator = self.grad(actual, predicted).sum() ** 2
-        denominator = (self.hess(actual, predicted).sum() + self.regularization)
+        denominator = self.hess(actual, predicted).sum() + self.regularization
         return 0.5 * (nominator / denominator)
 
 
@@ -98,14 +99,20 @@ class GradientBoosting(BaseEstimator):
             # Pass multiple target values to the tree learner
             targets = {
                 # Residual values
-                'y': residuals,
+                "y": residuals,
                 # Actual target values
-                'actual': self.y,
+                "actual": self.y,
                 # Predictions from previous step
-                'y_pred': y_pred
+                "y_pred": y_pred,
             }
-            tree.train(self.X, targets, max_features=self.max_features,
-                       min_samples_split=self.min_samples_split, max_depth=self.max_depth, loss=self.loss)
+            tree.train(
+                self.X,
+                targets,
+                max_features=self.max_features,
+                min_samples_split=self.min_samples_split,
+                max_depth=self.max_depth,
+                loss=self.loss,
+            )
             predictions = tree.predict(self.X)
             y_pred += self.learning_rate * predictions
             self.trees.append(tree)

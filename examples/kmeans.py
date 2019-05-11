@@ -5,10 +5,9 @@ from mla.kmeans import KMeans
 
 
 def kmeans_example(plot=False):
-    X, y = make_blobs(centers=4, n_samples=500, n_features=2,
-                      shuffle=True, random_state=42)
+    X, y = make_blobs(centers=4, n_samples=500, n_features=2, shuffle=True, random_state=42)
     clusters = len(np.unique(y))
-    k = KMeans(K=clusters, max_iters=150, init='++')
+    k = KMeans(K=clusters, max_iters=150, init="++")
     k.fit(X)
     k.predict()
 
@@ -16,5 +15,5 @@ def kmeans_example(plot=False):
         k.plot()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     kmeans_example(plot=True)

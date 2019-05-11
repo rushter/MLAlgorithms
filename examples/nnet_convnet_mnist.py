@@ -15,8 +15,8 @@ logging.basicConfig(level=logging.DEBUG)
 X_train, X_test, y_train, y_test = load_mnist()
 
 # Normalize data
-X_train /= 255.
-X_test /= 255.
+X_train /= 255.0
+X_test /= 255.0
 
 y_train = one_hot(y_train.flatten())
 y_test = one_hot(y_test.flatten())
@@ -26,22 +26,21 @@ print(X_train.shape, X_test.shape, y_train.shape, y_test.shape)
 model = NeuralNet(
     layers=[
         Convolution(n_filters=32, filter_shape=(3, 3), padding=(1, 1), stride=(1, 1)),
-        Activation('relu'),
+        Activation("relu"),
         Convolution(n_filters=32, filter_shape=(3, 3), padding=(1, 1), stride=(1, 1)),
-        Activation('relu'),
+        Activation("relu"),
         MaxPooling(pool_shape=(2, 2), stride=(2, 2)),
         Dropout(0.5),
-
         Flatten(),
         Dense(128),
-        Activation('relu'),
+        Activation("relu"),
         Dropout(0.5),
         Dense(10),
-        Activation('softmax'),
+        Activation("softmax"),
     ],
-    loss='categorical_crossentropy',
+    loss="categorical_crossentropy",
     optimizer=Adadelta(),
-    metric='accuracy',
+    metric="accuracy",
     batch_size=128,
     max_epochs=3,
 )

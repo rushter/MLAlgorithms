@@ -7,7 +7,7 @@ class Linear(object):
         return np.dot(x, y.T)
 
     def __repr__(self):
-        return 'Linear kernel'
+        return "Linear kernel"
 
 
 class Poly(object):
@@ -18,7 +18,7 @@ class Poly(object):
         return np.dot(x, y.T) ** self.degree
 
     def __repr__(self):
-        return 'Poly kernel'
+        return "Poly kernel"
 
 
 class RBF(object):
@@ -31,4 +31,4 @@ class RBF(object):
         return np.exp(-self.gamma * dist.cdist(x, y) ** 2).flatten()
 
     def __repr__(self):
-        return 'RBF kernel'
+        return "RBF kernel"

@@ -10,7 +10,7 @@ np.random.seed(1000)
 
 
 class BasicRegression(BaseEstimator):
-    def __init__(self, lr=0.001, penalty='None', C=0.01, tolerance=0.0001, max_iters=1000):
+    def __init__(self, lr=0.001, penalty="None", C=0.01, tolerance=0.0001, max_iters=1000):
         """Basic class for implementing continuous regression estimators which
         are trained with gradient descent optimization on their particular loss
         function.
@@ -78,7 +78,7 @@ class BasicRegression(BaseEstimator):
 
     def _train(self):
         self.theta, self.errors = self._gradient_descent()
-        logging.info(' Theta: %s' % self.theta.flatten())
+        logging.info(" Theta: %s" % self.theta.flatten())
 
     def _predict(self, X=None):
         X = self._add_intercept(X)
@@ -95,11 +95,11 @@ class BasicRegression(BaseEstimator):
             theta -= self.lr * delta
 
             errors.append(self._cost(self.X, self.y, theta))
-            logging.info('Iteration %s, error %s' % (i, errors[i]))
+            logging.info("Iteration %s, error %s" % (i, errors[i]))
 
             error_diff = np.linalg.norm(errors[i - 1] - errors[i])
             if error_diff < self.tolerance:
-                logging.info('Convergence has reached.')
+                logging.info("Convergence has reached.")
                 break
         return theta, errors
 

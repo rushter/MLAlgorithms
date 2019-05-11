@@ -19,7 +19,7 @@ https://lvdmaaten.github.io/tsne/code/tsne_python.zip
 class TSNE(BaseEstimator):
     y_required = False
 
-    def __init__(self, n_components=2, perplexity=30., max_iter=200, learning_rate=500):
+    def __init__(self, n_components=2, perplexity=30.0, max_iter=200, learning_rate=500):
         """A t-Distributed Stochastic Neighbor Embedding implementation.
 
         Parameters
@@ -88,7 +88,7 @@ class TSNE(BaseEstimator):
             affines[i, :] = self._binary_search(distances[i], target_entropy)
 
         # Fill diagonal with near zero value
-        np.fill_diagonal(affines, 1.e-12)
+        np.fill_diagonal(affines, 1.0e-12)
 
         affines = affines.clip(min=1e-100)
         affines = (affines + affines.T) / (2 * self.n_samples)
@@ -97,15 +97,15 @@ class TSNE(BaseEstimator):
     def _binary_search(self, dist, target_entropy):
         """Performs binary search to find suitable precision."""
         precision_min = 0
-        precision_max = 1.e15
-        precision = 1.e5
+        precision_max = 1.0e15
+        precision = 1.0e5
 
         for _ in range(self.perplexity_tries):
-            denom = np.sum(np.exp(-dist[dist > 0.] / precision))
+            denom = np.sum(np.exp(-dist[dist > 0.0] / precision))
             beta = np.exp(-dist / precision) / denom
 
             # Exclude zeros
-            g_beta = beta[beta > 0.]
+            g_beta = beta[beta > 0.0]
             entropy = -np.sum(g_beta * np.log2(g_beta))
 
             error = entropy - target_entropy
@@ -113,11 +113,11 @@ class TSNE(BaseEstimator):
             if error > 0:
                 # Decrease precision
                 precision_max = precision
-                precision = (precision + precision_min) / 2.
+                precision = (precision + precision_min) / 2.0
             else:
                 # Increase precision
                 precision_min = precision
-                precision = (precision + precision_max) / 2.
+                precision = (precision + precision_max) / 2.0
 
             if np.abs(error) < self.tol:
                 break

@@ -35,26 +35,26 @@ class Convolution(Layer, ParamMixin):
         n_channels, self.height, self.width = X_shape[1:]
 
         W_shape = (self.n_filters, n_channels) + self.filter_shape
-        b_shape = (self.n_filters)
+        b_shape = self.n_filters
         self._params.setup_weights(W_shape, b_shape)
 
     def forward_pass(self, X):
         n_images, n_channels, height, width = self.shape(X.shape)
         self.last_input = X
         self.col = image_to_column(X, self.filter_shape, self.stride, self.padding)
-        self.col_W = self._params['W'].reshape(self.n_filters, -1).T
+        self.col_W = self._params["W"].reshape(self.n_filters, -1).T
 
-        out = np.dot(self.col, self.col_W) + self._params['b']
+        out = np.dot(self.col, self.col_W) + self._params["b"]
         out = out.reshape(n_images, height, width, -1).transpose(0, 3, 1, 2)
         return out
 
     def backward_pass(self, delta):
         delta = delta.transpose(0, 2, 3, 1).reshape(-1, self.n_filters)
 
-        d_W = np.dot(self.col.T, delta).transpose(1, 0).reshape(self._params['W'].shape)
+        d_W = np.dot(self.col.T, delta).transpose(1, 0).reshape(self._params["W"].shape)
         d_b = np.sum(delta, axis=0)
-        self._params.update_grad('b', d_b)
-        self._params.update_grad('W', d_W)
+        self._params.update_grad("b", d_b)
+        self._params.update_grad("W", d_W)
 
         d_c = np.dot(delta, self.col_W.T)
         return column_to_image(d_c, self.last_input.shape, self.filter_shape, self.stride, self.padding)
@@ -138,14 +138,14 @@ def image_to_column(images, filter_shape, stride, padding):
     n_images, n_channels, height, width = images.shape
     f_height, f_width = filter_shape
     out_height, out_width = convoltuion_shape(height, width, (f_height, f_width), stride, padding)
-    images = np.pad(images, ((0, 0), (0, 0), padding, padding), mode='constant')
+    images = np.pad(images, ((0, 0), (0, 0), padding, padding), mode="constant")
 
     col = np.zeros((n_images, n_channels, f_height, f_width, out_height, out_width))
     for y in range(f_height):
         y_bound = y + stride[0] * out_height
         for x in range(f_width):
             x_bound = x + stride[1] * out_width
-            col[:, :, y, x, :, :] = images[:, :, y:y_bound:stride[0], x:x_bound:stride[1]]
+            col[:, :, y, x, :, :] = images[:, :, y : y_bound : stride[0], x : x_bound : stride[1]]
 
     col = col.transpose(0, 4, 5, 1, 2, 3).reshape(n_images * out_height * out_width, -1)
     return col
@@ -166,8 +166,9 @@ def column_to_image(columns, images_shape, filter_shape, stride, padding):
     f_height, f_width = filter_shape
 
     out_height, out_width = convoltuion_shape(height, width, (f_height, f_width), stride, padding)
-    columns = columns.reshape(n_images, out_height, out_width, n_channels, f_height, f_width).transpose(0, 3, 4, 5, 1,
-                                                                                                        2)
+    columns = columns.reshape(n_images, out_height, out_width, n_channels, f_height, f_width).transpose(
+        0, 3, 4, 5, 1, 2
+    )
 
     img_h = height + 2 * padding[0] + stride[0] - 1
     img_w = width + 2 * padding[1] + stride[1] - 1
@@ -176,9 +177,9 @@ def column_to_image(columns, images_shape, filter_shape, stride, padding):
         y_bound = y + stride[0] * out_height
         for x in range(f_width):
             x_bound = x + stride[1] * out_width
-            img[:, :, y:y_bound:stride[0], x:x_bound:stride[1]] += columns[:, :, y, x, :, :]
+            img[:, :, y : y_bound : stride[0], x : x_bound : stride[1]] += columns[:, :, y, x, :, :]
 
-    return img[:, :, padding[0]:height + padding[0], padding[1]:width + padding[1]]
+    return img[:, :, padding[0] : height + padding[0], padding[1] : width + padding[1]]
 
 
 def convoltuion_shape(img_height, img_width, filter_shape, stride, padding):

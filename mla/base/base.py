@@ -27,7 +27,7 @@ class BaseEstimator(object):
             X = np.array(X)
 
         if X.size == 0:
-            raise ValueError('Number of features must be > 0')
+            raise ValueError("Number of features must be > 0")
 
         if X.ndim == 1:
             self.n_samples, self.n_features = 1, X.shape
@@ -38,13 +38,13 @@ class BaseEstimator(object):
 
         if self.y_required:
             if y is None:
-                raise ValueError('Missed required argument y')
+                raise ValueError("Missed required argument y")
 
             if not isinstance(y, np.ndarray):
                 y = np.array(y)
 
             if y.size == 0:
-                raise ValueError('Number of targets must be > 0')
+                raise ValueError("Number of targets must be > 0")
 
         self.y = y
 
@@ -58,7 +58,7 @@ class BaseEstimator(object):
         if self.X is not None or not self.fit_required:
             return self._predict(X)
         else:
-            raise ValueError('You must call `fit` before `predict`')
+            raise ValueError("You must call `fit` before `predict`")
 
     def _predict(self, X=None):
         raise NotImplementedError()

@@ -4,7 +4,7 @@ from mla.neuralnet.initializations import get_initializer
 
 
 class Parameters(object):
-    def __init__(self, init='glorot_uniform', scale=0.5, bias=1.0, regularizers=None, constraints=None):
+    def __init__(self, init="glorot_uniform", scale=0.5, bias=1.0, regularizers=None, constraints=None):
         """A container for layer's parameters.
 
         Parameters
@@ -39,12 +39,12 @@ class Parameters(object):
         self._grads = {}
 
     def setup_weights(self, W_shape, b_shape=None):
-        if 'W' not in self._params:
-            self._params['W'] = self.init(shape=W_shape, scale=self.scale)
+        if "W" not in self._params:
+            self._params["W"] = self.init(shape=W_shape, scale=self.scale)
             if b_shape is None:
-                self._params['b'] = np.full(W_shape[1], self.initial_bias)
+                self._params["b"] = np.full(W_shape[1], self.initial_bias)
             else:
-                self._params['b'] = np.full(b_shape, self.initial_bias)
+                self._params["b"] = np.full(b_shape, self.initial_bias)
         self.init_grad()
 
     def init_grad(self):

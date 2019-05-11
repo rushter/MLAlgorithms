@@ -23,7 +23,7 @@ class MaxNorm(object):
 
 class NonNeg(object):
     def clip(self, p):
-        p[p < 0.] = 0.
+        p[p < 0.0] = 0.0
         return p
 
 

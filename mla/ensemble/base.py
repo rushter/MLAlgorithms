@@ -7,7 +7,7 @@ def f_entropy(p):
     p = np.bincount(p) / float(p.shape[0])
 
     ep = stats.entropy(p)
-    if ep == -float('inf'):
+    if ep == -float("inf"):
         return 0.0
     return ep
 
@@ -23,22 +23,22 @@ def mse_criterion(y, splits):
 
 
 def xgb_criterion(y, left, right, loss):
-    left = loss.gain(left['actual'], left['y_pred'])
-    right = loss.gain(right['actual'], right['y_pred'])
-    initial = loss.gain(y['actual'], y['y_pred'])
+    left = loss.gain(left["actual"], left["y_pred"])
+    right = loss.gain(right["actual"], right["y_pred"])
+    initial = loss.gain(y["actual"], y["y_pred"])
     gain = left + right - initial
     return gain
 
 
 def get_split_mask(X, column, value):
-    left_mask = (X[:, column] < value)
-    right_mask = (X[:, column] >= value)
+    left_mask = X[:, column] < value
+    right_mask = X[:, column] >= value
     return left_mask, right_mask
 
 
 def split(X, y, value):
-    left_mask = (X < value)
-    right_mask = (X >= value)
+    left_mask = X < value
+    right_mask = X >= value
     return y[left_mask], y[right_mask]
 
 

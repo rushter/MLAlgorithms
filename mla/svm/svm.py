@@ -72,10 +72,18 @@ class SVM(BaseEstimator):
                 self.alpha[i] = self.alpha[i] + self.y[i] * self.y[j] * (alpha_jo - self.alpha[j])
 
                 # Find intercept
-                b1 = self.b - e_i - self.y[i] * (self.alpha[i] - alpha_jo) * self.K[i, i] - \
-                     self.y[j] * (self.alpha[j] - alpha_jo) * self.K[i, j]
-                b2 = self.b - e_j - self.y[j] * (self.alpha[j] - alpha_jo) * self.K[j, j] - \
-                     self.y[i] * (self.alpha[i] - alpha_io) * self.K[i, j]
+                b1 = (
+                    self.b
+                    - e_i
+                    - self.y[i] * (self.alpha[i] - alpha_jo) * self.K[i, i]
+                    - self.y[j] * (self.alpha[j] - alpha_jo) * self.K[i, j]
+                )
+                b2 = (
+                    self.b
+                    - e_j
+                    - self.y[j] * (self.alpha[j] - alpha_jo) * self.K[j, j]
+                    - self.y[i] * (self.alpha[i] - alpha_io) * self.K[i, j]
+                )
                 if 0 < self.alpha[i] < self.C:
                     self.b = b1
                 elif 0 < self.alpha[j] < self.C:
@@ -87,7 +95,7 @@ class SVM(BaseEstimator):
             diff = np.linalg.norm(self.alpha - alpha_prev)
             if diff < self.tol:
                 break
-        logging.info('Convergence has reached after %s.' % iters)
+        logging.info("Convergence has reached after %s." % iters)
 
         # Save support vectors index
         self.sv_idx = np.where(self.alpha > 0)[0]

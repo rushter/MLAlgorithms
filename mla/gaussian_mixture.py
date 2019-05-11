@@ -37,7 +37,7 @@ class GaussianMixture(BaseEstimator):
 
     y_required = False
 
-    def __init__(self, K=4, init='random', max_iters=500, tolerance=1e-3):
+    def __init__(self, K=4, init="random", max_iters=500, tolerance=1e-3):
         self.K = K
         self.max_iters = max_iters
         self.init = init
@@ -46,7 +46,7 @@ class GaussianMixture(BaseEstimator):
         self.tolerance = tolerance
 
     def fit(self, X, y=None):
-        '''Perform Expectation–Maximization (EM) until converged.'''
+        """Perform Expectation–Maximization (EM) until converged."""
         self._setup_input(X, y)
         self._initialize()
         for _ in range(self.max_iters):
@@ -63,12 +63,12 @@ class GaussianMixture(BaseEstimator):
         covs: the covariance matrix of the clusters
         """
         self.weights = np.ones(self.K)
-        if self.init == 'random':
+        if self.init == "random":
             self.means = [self.X[x] for x in random.sample(range(self.n_samples), self.K)]
             self.covs = [np.cov(self.X.T) for _ in range(K)]
 
-        elif self.init == 'kmeans':
-            kmeans = KMeans(K=self.K, max_iters=self.max_iters // 3, init='++')
+        elif self.init == "kmeans":
+            kmeans = KMeans(K=self.K, max_iters=self.max_iters // 3, init="++")
             kmeans.fit(self.X)
             self.assignments = kmeans.predict()
             self.means = kmeans.centroids
@@ -77,11 +77,11 @@ class GaussianMixture(BaseEstimator):
                 self.weights[int(i)] = (self.assignments == i).sum()
                 self.covs.append(np.cov(self.X[self.assignments == i].T))
         else:
-            raise ValueError('Unknown type of init parameter')
+            raise ValueError("Unknown type of init parameter")
         self.weights /= self.weights.sum()
 
     def _E_step(self):
-        '''Expectation(E-step) for Gaussian Mixture.'''
+        """Expectation(E-step) for Gaussian Mixture."""
         likelihoods = self._get_likelihood(self.X)
         self.likelihood.append(likelihoods.sum())
         weighted_likelihoods = self._get_weighted_likelihood(likelihoods)
@@ -90,13 +90,14 @@ class GaussianMixture(BaseEstimator):
         self.responsibilities = weighted_likelihoods
 
     def _M_step(self):
-        '''Maximization (M-step) for Gaussian Mixture.'''
+        """Maximization (M-step) for Gaussian Mixture."""
         weights = self.responsibilities.sum(axis=0)
         for assignment in range(self.K):
             resp = self.responsibilities[:, assignment][:, np.newaxis]
             self.means[assignment] = (resp * self.X).sum(axis=0) / resp.sum()
             self.covs[assignment] = (self.X - self.means[assignment]).T.dot(
-                (self.X - self.means[assignment]) * resp) / weights[assignment]
+                (self.X - self.means[assignment]) * resp
+            ) / weights[assignment]
         self.weights = weights / weights.sum()
 
     def _is_converged(self):
@@ -106,7 +107,7 @@ class GaussianMixture(BaseEstimator):
         return False
 
     def _predict(self, X):
-        '''Get the assignments for X with GMM clusters.'''
+        """Get the assignments for X with GMM clusters."""
         if not X.shape:
             return self.assignments
         likelihoods = self._get_likelihood(X)
@@ -125,7 +126,7 @@ class GaussianMixture(BaseEstimator):
         return self.weights * likelihood
 
     def plot(self, data=None, ax=None, holdon=False):
-        '''Plot contour for 2D data.'''
+        """Plot contour for 2D data."""
         if not (len(self.X.shape) == 2 and self.X.shape[1] == 2):
             raise AttributeError("Only support for visualizing 2D data.")
 
@@ -138,16 +139,15 @@ class GaussianMixture(BaseEstimator):
         else:
             assignments = self.predict(data)
 
-        COLOR = 'bgrcmyk'
+        COLOR = "bgrcmyk"
         cmap = lambda assignment: COLOR[int(assignment) % len(COLOR)]
 
         # generate grid
-        delta = .025
-        margin = .2
+        delta = 0.025
+        margin = 0.2
         xmax, ymax = self.X.max(axis=0) + margin
         xmin, ymin = self.X.min(axis=0) - margin
-        axis_X, axis_Y = np.meshgrid(np.arange(xmin, xmax, delta),
-                                     np.arange(ymin, ymax, delta))
+        axis_X, axis_Y = np.meshgrid(np.arange(xmin, xmax, delta), np.arange(ymin, ymax, delta))
 
         def grid_gaussian_pdf(mean, cov):
             grid_array = np.array(list(zip(axis_X.flatten(), axis_Y.flatten())))
@@ -162,8 +162,12 @@ class GaussianMixture(BaseEstimator):
 
         # plot contours
         for assignment in range(self.K):
-            ax.contour(axis_X, axis_Y, grid_gaussian_pdf(self.means[assignment], self.covs[assignment]),
-                       colors=cmap(assignment))
+            ax.contour(
+                axis_X,
+                axis_Y,
+                grid_gaussian_pdf(self.means[assignment], self.covs[assignment]),
+                colors=cmap(assignment),
+            )
 
         if not holdon:
             plt.show()

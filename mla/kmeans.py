@@ -37,9 +37,10 @@ class KMeans(BaseEstimator):
                larger distances between initial clusters to improve convergence
                rates and avoid degenerate cases.
     """
+
     y_required = False
 
-    def __init__(self, K=5, max_iters=100, init='random'):
+    def __init__(self, K=5, max_iters=100, init="random"):
         self.K = K
         self.max_iters = max_iters
         self.clusters = [[] for _ in range(self.K)]
@@ -49,15 +50,14 @@ class KMeans(BaseEstimator):
     def _initialize_centroids(self, init):
         """Set the initial centroids."""
 
-        if init == 'random':
-            self.centroids = [self.X[x] for x in
-                              random.sample(range(self.n_samples), self.K)]
-        elif init == '++':
+        if init == "random":
+            self.centroids = [self.X[x] for x in random.sample(range(self.n_samples), self.K)]
+        elif init == "++":
             self.centroids = [random.choice(self.X)]
             while len(self.centroids) < self.K:
                 self.centroids.append(self._choose_next_center())
         else:
-            raise ValueError('Unknown type of init parameter')
+            raise ValueError("Unknown type of init parameter")
 
     def _predict(self, X=None):
         """Perform clustering on the dataset."""
@@ -117,8 +117,8 @@ class KMeans(BaseEstimator):
 
     def _choose_next_center(self):
         distances = self._dist_from_centers()
-        squared_distances = distances**2
-        probs = squared_distances/squared_distances.sum()
+        squared_distances = distances ** 2
+        probs = squared_distances / squared_distances.sum()
         ind = np.random.choice(self.X.shape[0], 1, p=probs)[0]
         return self.X[ind]
 
@@ -137,14 +137,12 @@ class KMeans(BaseEstimator):
         if ax is None:
             _, ax = plt.subplots()
 
-
-
         for i, index in enumerate(self.clusters):
             point = np.array(data[index]).T
             ax.scatter(*point, c=sns.color_palette("hls", self.K + 1)[i])
 
         for point in self.centroids:
-            ax.scatter(*point, marker='x', linewidths=10)
+            ax.scatter(*point, marker="x", linewidths=10)
 
         if not holdon:
             plt.show()

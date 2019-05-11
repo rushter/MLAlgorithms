@@ -14,15 +14,14 @@ from mla.neuralnet.parameters import Parameters
 
 
 # Generate a random regression problem
-X, y = make_regression(n_samples=1000, n_features=10,
-                       n_informative=10, n_targets=1, noise=0.05,
-                       random_state=1111, bias=0.5)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25,
-                                                    random_state=1111)
+X, y = make_regression(
+    n_samples=1000, n_features=10, n_informative=10, n_targets=1, noise=0.05, random_state=1111, bias=0.5
+)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=1111)
 
 
 def test_linear():
-    model = LinearRegression(lr=0.01, max_iters=2000, penalty='l2', C=0.003)
+    model = LinearRegression(lr=0.01, max_iters=2000, penalty="l2", C=0.003)
     model.fit(X_train, y_train)
     predictions = model.predict(X_test)
     assert mean_squared_error(y_test, predictions) < 0.25
@@ -31,15 +30,15 @@ def test_linear():
 def test_mlp():
     model = NeuralNet(
         layers=[
-            Dense(16, Parameters(init='normal')),
-            Activation('linear'),
-            Dense(8, Parameters(init='normal')),
-            Activation('linear'),
+            Dense(16, Parameters(init="normal")),
+            Activation("linear"),
+            Dense(8, Parameters(init="normal")),
+            Activation("linear"),
             Dense(1),
         ],
-        loss='mse',
+        loss="mse",
         optimizer=Adam(),
-        metric='mse',
+        metric="mse",
         batch_size=64,
         max_epochs=150,
     )

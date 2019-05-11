@@ -38,13 +38,11 @@ class KNNBase(BaseEstimator):
         distances = (self.distance_func(x, example) for example in self.X)
 
         # Sort all examples by their distance to x and keep their target value.
-        neighbors = sorted(((dist, target)
-                            for (dist, target) in zip(distances, self.y)),
-                           key=lambda x: x[0])
+        neighbors = sorted(((dist, target) for (dist, target) in zip(distances, self.y)), key=lambda x: x[0])
 
         # Get targets of the k-nn and aggregate them (most common one or
         # average).
-        neighbors_targets = [target for (_, target) in neighbors[:self.k]]
+        neighbors_targets = [target for (_, target) in neighbors[: self.k]]
 
         return self.aggregate(neighbors_targets)
 

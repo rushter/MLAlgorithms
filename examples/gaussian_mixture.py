@@ -19,7 +19,7 @@ def make_clusters(skew=True, *arg, **kwargs):
 
 
 def KMeans_and_GMM(K):
-    COLOR = 'bgrcmyk'
+    COLOR = "bgrcmyk"
 
     X, y = make_clusters(skew=True, n_samples=1500, centers=K)
     _, axes = plt.subplots(1, 3)
@@ -29,14 +29,14 @@ def KMeans_and_GMM(K):
     axes[0].set_title("Ground Truth")
 
     # KMeans
-    kmeans = KMeans(K=K, init='++')
+    kmeans = KMeans(K=K, init="++")
     kmeans.fit(X)
     kmeans.predict()
     axes[1].set_title("KMeans")
     kmeans.plot(ax=axes[1], holdon=True)
 
     # Gaussian Mixture
-    gmm = GaussianMixture(K=K, init='kmeans')
+    gmm = GaussianMixture(K=K, init="kmeans")
     gmm.fit(X)
     axes[2].set_title("Gaussian Mixture")
     gmm.plot(ax=axes[2])

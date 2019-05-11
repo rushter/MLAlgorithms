@@ -9,4 +9,4 @@ def get_loss(name):
     try:
         return globals()[name]
     except:
-        raise ValueError('Invalid metric function.')
+        raise ValueError("Invalid metric function.")

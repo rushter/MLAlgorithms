@@ -10,7 +10,7 @@ from mla.neuralnet.parameters import Parameters
 class RNN(Layer, ParamMixin):
     """Vanilla RNN."""
 
-    def __init__(self, hidden_dim, activation='tanh', inner_init='orthogonal', parameters=None, return_sequences=True):
+    def __init__(self, hidden_dim, activation="tanh", inner_init="orthogonal", parameters=None, return_sequences=True):
         self.return_sequences = return_sequences
         self.hidden_dim = hidden_dim
         self.inner_init = get_initializer(inner_init)
@@ -34,11 +34,11 @@ class RNN(Layer, ParamMixin):
         self.input_dim = x_shape[2]
 
         # Input -> Hidden
-        self._params['W'] = self._params.init((self.input_dim, self.hidden_dim))
+        self._params["W"] = self._params.init((self.input_dim, self.hidden_dim))
         # Bias
-        self._params['b'] = np.full((self.hidden_dim,), self._params.initial_bias)
+        self._params["b"] = np.full((self.hidden_dim,), self._params.initial_bias)
         # Hidden -> Hidden layer
-        self._params['U'] = self.inner_init((self.hidden_dim, self.hidden_dim))
+        self._params["U"] = self.inner_init((self.hidden_dim, self.hidden_dim))
 
         # Init gradient arrays
         self._params.init_grad()
@@ -53,7 +53,7 @@ class RNN(Layer, ParamMixin):
         p = self._params
 
         for i in range(n_timesteps):
-            states[:, i, :] = np.tanh(np.dot(X[:, i, :], p['W']) + np.dot(states[:, i - 1, :], p['U']) + p['b'])
+            states[:, i, :] = np.tanh(np.dot(X[:, i, :], p["W"]) + np.dot(states[:, i - 1, :], p["U"]) + p["b"])
 
         self.states = states
         self.hprev = states[:, n_timesteps - 1, :].copy()
@@ -78,14 +78,14 @@ class RNN(Layer, ParamMixin):
         for i in reversed(range(n_timesteps)):
             dhi = self.activation_d(self.states[:, i, :]) * (delta[:, i, :] + dh_next)
 
-            grad['W'] += np.dot(self.last_input[:, i, :].T, dhi)
-            grad['b'] += delta[:, i, :].sum(axis=0)
-            grad['U'] += np.dot(self.states[:, i - 1, :].T, dhi)
+            grad["W"] += np.dot(self.last_input[:, i, :].T, dhi)
+            grad["b"] += delta[:, i, :].sum(axis=0)
+            grad["U"] += np.dot(self.states[:, i - 1, :].T, dhi)
 
-            dh_next = np.dot(dhi, p['U'].T)
+            dh_next = np.dot(dhi, p["U"].T)
 
-            d = np.dot(delta[:, i, :], p['U'].T)
-            output[:, i, :] = np.dot(d, p['W'].T)
+            d = np.dot(delta[:, i, :], p["U"].T)
+            output[:, i, :] = np.dot(d, p["W"].T)
 
         # Change actual gradient arrays
         for k in grad.keys():

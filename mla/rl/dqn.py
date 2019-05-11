@@ -18,8 +18,9 @@ References:
 
 
 class DQN(object):
-    def __init__(self, n_episodes=500, gamma=0.99, batch_size=32, epsilon=1., decay=0.005, min_epsilon=0.1,
-                 memory_limit=500):
+    def __init__(
+        self, n_episodes=500, gamma=0.99, batch_size=32, epsilon=1.0, decay=0.005, min_epsilon=0.1, memory_limit=500
+    ):
         """Deep Q learning implementation.
 
         Parameters
@@ -44,7 +45,7 @@ class DQN(object):
         self.batch_size = batch_size
         self.decay = decay
 
-    def init_environment(self, name='CartPole-v0', monitor=False):
+    def init_environment(self, name="CartPole-v0", monitor=False):
         self.env = gym.make(name)
         if monitor:
             self.env = wrappers.Monitor(self.env, name, force=True, video_callable=False)
@@ -124,9 +125,10 @@ class DQN(object):
             self.epsilon = self.min_epsilon + (1.0 - self.min_epsilon) * np.exp(-self.decay * ep)
 
             max_reward = max(max_reward, total_reward)
-            logger.info('Episode: %s, reward %s,  epsilon %s, max reward %s' % (ep, total_reward,
-                                                                                self.epsilon, max_reward))
-        logging.info('Training finished.')
+            logger.info(
+                "Episode: %s, reward %s,  epsilon %s, max reward %s" % (ep, total_reward, self.epsilon, max_reward)
+            )
+        logging.info("Training finished.")
 
     def play(self, episodes):
         for i in range(episodes):
@@ -140,5 +142,5 @@ class DQN(object):
                 total_reward += reward
                 if done:
                     break
-            logger.info('Episode: %s, reward %s' % (i, total_reward))
+            logger.info("Episode: %s, reward %s" % (i, total_reward))
         self.env.close()

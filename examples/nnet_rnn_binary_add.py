@@ -2,6 +2,7 @@ import logging
 from itertools import combinations, islice
 
 import numpy as np
+
 try:
     from sklearn.model_selection import train_test_split
 except ImportError:
@@ -20,7 +21,7 @@ def addition_dataset(dim=10, n_samples=10000, batch_size=64):
     """Generate binary addition dataset.
     http://devankuleindiren.com/Projects/rnn_arithmetic.php
     """
-    binary_format = '{:0' + str(dim) + 'b}'
+    binary_format = "{:0" + str(dim) + "b}"
 
     # Generate all possible number combinations
     combs = list(islice(combinations(range(2 ** (dim - 1)), 2), n_samples))
@@ -55,14 +56,10 @@ def addition_problem(ReccurentLayer):
 
     print(X_train.shape, X_test.shape)
     model = NeuralNet(
-        layers=[
-            ReccurentLayer,
-            TimeDistributedDense(1),
-            Activation('sigmoid'),
-        ],
-        loss='mse',
+        layers=[ReccurentLayer, TimeDistributedDense(1), Activation("sigmoid")],
+        loss="mse",
         optimizer=Adam(),
-        metric='mse',
+        metric="mse",
         batch_size=64,
         max_epochs=15,
     )

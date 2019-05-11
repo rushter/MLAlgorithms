@@ -50,7 +50,7 @@ class PhaseMixin(object):
 
 
 class Dense(Layer, ParamMixin):
-    def __init__(self, output_dim, parameters=None, ):
+    def __init__(self, output_dim, parameters=None):
         """A fully connected layer.
 
         Parameters
@@ -72,17 +72,17 @@ class Dense(Layer, ParamMixin):
         return self.weight(X)
 
     def weight(self, X):
-        W = np.dot(X, self._params['W'])
-        return W + self._params['b']
+        W = np.dot(X, self._params["W"])
+        return W + self._params["b"]
 
     def backward_pass(self, delta):
         dW = np.dot(self.last_input.T, delta)
         db = np.sum(delta, axis=0)
 
         # Update gradient values
-        self._params.update_grad('W', dW)
-        self._params.update_grad('b', db)
-        return np.dot(delta, self._params['W'].T)
+        self._params.update_grad("W", dW)
+        self._params.update_grad("b", db)
+        return np.dot(delta, self._params["W"].T)
 
     def shape(self, x_shape):
         return x_shape[0], self.output_dim

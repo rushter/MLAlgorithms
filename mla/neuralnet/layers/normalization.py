@@ -7,6 +7,7 @@ References:
 https://kratzert.github.io/2016/02/12/understanding-the-gradient-flow-through-the-batch-normalization-layer.html
 """
 
+
 class BatchNormalization(Layer, ParamMixin, PhaseMixin):
     def __init__(self, momentum=0.9, eps=1e-5, parameters=None):
         super().__init__()
@@ -22,15 +23,15 @@ class BatchNormalization(Layer, ParamMixin, PhaseMixin):
         self._params.setup_weights((1, x_shape[1]))
 
     def _forward_pass(self, X):
-        gamma = self._params['W']
-        beta = self._params['b']
+        gamma = self._params["W"]
+        beta = self._params["b"]
 
         if self.is_testing:
             mu = self.ema_mean
             xmu = X - mu
             var = self.ema_var
             sqrtvar = np.sqrt(var + self.eps)
-            ivar = 1. / sqrtvar
+            ivar = 1.0 / sqrtvar
             xhat = xmu * ivar
             gammax = gamma * xhat
             return gammax + beta
@@ -38,7 +39,7 @@ class BatchNormalization(Layer, ParamMixin, PhaseMixin):
         N, D = X.shape
 
         # step1: calculate mean
-        mu = 1. / N * np.sum(X, axis=0)
+        mu = 1.0 / N * np.sum(X, axis=0)
 
         # step2: subtract mean vector of every trainings example
         xmu = X - mu
@@ -47,13 +48,13 @@ class BatchNormalization(Layer, ParamMixin, PhaseMixin):
         sq = xmu ** 2
 
         # step4: calculate variance
-        var = 1. / N * np.sum(sq, axis=0)
+        var = 1.0 / N * np.sum(sq, axis=0)
 
         # step5: add eps for numerical stability, then sqrt
         sqrtvar = np.sqrt(var + self.eps)
 
         # step6: invert sqrtwar
-        ivar = 1. / sqrtvar
+        ivar = 1.0 / sqrtvar
 
         # step7: execute normalization
         xhat = xmu * ivar
@@ -87,7 +88,7 @@ class BatchNormalization(Layer, ParamMixin, PhaseMixin):
             out_flat = self._forward_pass(x_flat)
             return out_flat.reshape(N, H, W, C).transpose(0, 3, 1, 2)
         else:
-            raise NotImplementedError('Unknown model with dimensions = {}'.format(len(X.shape)))
+            raise NotImplementedError("Unknown model with dimensions = {}".format(len(X.shape)))
 
     def _backward_pass(self, delta):
         # unfold the variables stored in cache
@@ -109,30 +110,30 @@ class BatchNormalization(Layer, ParamMixin, PhaseMixin):
         dxmu1 = dxhat * ivar
 
         # step6
-        dsqrtvar = -1. / (sqrtvar ** 2) * divar
+        dsqrtvar = -1.0 / (sqrtvar ** 2) * divar
 
         # step5
-        dvar = 0.5 * 1. / np.sqrt(var + self.eps) * dsqrtvar
+        dvar = 0.5 * 1.0 / np.sqrt(var + self.eps) * dsqrtvar
 
         # step4
-        dsq = 1. / N * np.ones((N, D)) * dvar
+        dsq = 1.0 / N * np.ones((N, D)) * dvar
 
         # step3
         dxmu2 = 2 * xmu * dsq
 
         # step2
-        dx1 = (dxmu1 + dxmu2)
+        dx1 = dxmu1 + dxmu2
         dmu = -1 * np.sum(dxmu1 + dxmu2, axis=0)
 
         # step1
-        dx2 = 1. / N * np.ones((N, D)) * dmu
+        dx2 = 1.0 / N * np.ones((N, D)) * dmu
 
         # step0
         dx = dx1 + dx2
 
         # Update gradient values
-        self._params.update_grad('W', dgamma)
-        self._params.update_grad('b', dbeta)
+        self._params.update_grad("W", dgamma)
+        self._params.update_grad("b", dbeta)
 
         return dx
 
@@ -147,7 +148,7 @@ class BatchNormalization(Layer, ParamMixin, PhaseMixin):
             out_flat = self._backward_pass(x_flat)
             return out_flat.reshape(N, H, W, C).transpose(0, 3, 1, 2)
         else:
-            raise NotImplementedError('Unknown model shape: {}'.format(X.shape))
+            raise NotImplementedError("Unknown model shape: {}".format(X.shape))
 
     def shape(self, x_shape):
         return x_shape

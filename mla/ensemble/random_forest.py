@@ -34,25 +34,34 @@ class RandomForest(BaseEstimator):
         if self.max_features is None:
             self.max_features = int(np.sqrt(X.shape[1]))
         else:
-            assert (X.shape[1] > self.max_features)
+            assert X.shape[1] > self.max_features
         self._train()
 
     def _train(self):
         for tree in self.trees:
-            tree.train(self.X, self.y, max_features=self.max_features, min_samples_split=self.min_samples_split,
-                       max_depth=self.max_depth)
+            tree.train(
+                self.X,
+                self.y,
+                max_features=self.max_features,
+                min_samples_split=self.min_samples_split,
+                max_depth=self.max_depth,
+            )
 
     def _predict(self, X=None):
         raise NotImplementedError()
 
 
 class RandomForestClassifier(RandomForest):
-    def __init__(self, n_estimators=10, max_features=None, min_samples_split=10, max_depth=None, criterion='entropy'):
-        super(RandomForestClassifier, self).__init__(n_estimators=n_estimators, max_features=max_features,
-                                                     min_samples_split=min_samples_split, max_depth=max_depth,
-                                                     criterion=criterion)
+    def __init__(self, n_estimators=10, max_features=None, min_samples_split=10, max_depth=None, criterion="entropy"):
+        super(RandomForestClassifier, self).__init__(
+            n_estimators=n_estimators,
+            max_features=max_features,
+            min_samples_split=min_samples_split,
+            max_depth=max_depth,
+            criterion=criterion,
+        )
 
-        if criterion == 'entropy':
+        if criterion == "entropy":
             self.criterion = information_gain
         else:
             raise ValueError()
@@ -76,11 +85,15 @@ class RandomForestClassifier(RandomForest):
 
 
 class RandomForestRegressor(RandomForest):
-    def __init__(self, n_estimators=10, max_features=None, min_samples_split=10, max_depth=None, criterion='mse'):
-        super(RandomForestRegressor, self).__init__(n_estimators=n_estimators, max_features=max_features,
-                                                    min_samples_split=min_samples_split, max_depth=max_depth)
+    def __init__(self, n_estimators=10, max_features=None, min_samples_split=10, max_depth=None, criterion="mse"):
+        super(RandomForestRegressor, self).__init__(
+            n_estimators=n_estimators,
+            max_features=max_features,
+            min_samples_split=min_samples_split,
+            max_depth=max_depth,
+        )
 
-        if criterion == 'mse':
+        if criterion == "mse":
             self.criterion = mse_criterion
         else:
             raise ValueError()

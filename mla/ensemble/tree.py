@@ -52,8 +52,8 @@ class Tree(object):
             for value in split_values:
                 if self.loss is None:
                     # Random forest
-                    splits = split(X[:, column], target['y'], value)
-                    gain = self.criterion(target['y'], splits)
+                    splits = split(X[:, column], target["y"], value)
+                    gain = self.criterion(target["y"], splits)
                 else:
                     # Gradient boosting
                     left, right = split_dataset(X, target, column, value, return_X=False)
@@ -86,7 +86,7 @@ class Tree(object):
         """
 
         if not isinstance(target, dict):
-            target = {'y': target}
+            target = {"y": target}
 
         # Loss for gradient boosting
         if loss is not None:
@@ -94,18 +94,18 @@ class Tree(object):
 
         try:
             # Exit from recursion using assert syntax
-            assert (X.shape[0] > min_samples_split)
-            assert (max_depth > 0)
+            assert X.shape[0] > min_samples_split
+            assert max_depth > 0
 
             if max_features is None:
                 max_features = X.shape[1]
-                
+
             column, value, gain = self._find_best_split(X, target, max_features)
             assert gain is not None
             if self.regression:
-                assert (gain != 0)
+                assert gain != 0
             else:
-                assert (gain > minimum_gain)
+                assert gain > minimum_gain
 
             self.column_index = column
             self.threshold = value
@@ -116,12 +116,14 @@ class Tree(object):
 
             # Grow left and right child
             self.left_child = Tree(self.regression, self.criterion)
-            self.left_child.train(left_X, left_target, max_features, min_samples_split, max_depth - 1,
-                                  minimum_gain, loss)
+            self.left_child.train(
+                left_X, left_target, max_features, min_samples_split, max_depth - 1, minimum_gain, loss
+            )
 
             self.right_child = Tree(self.regression, self.criterion)
-            self.right_child.train(right_X, right_target, max_features, min_samples_split, max_depth - 1,
-                                   minimum_gain, loss)
+            self.right_child.train(
+                right_X, right_target, max_features, min_samples_split, max_depth - 1, minimum_gain, loss
+            )
         except AssertionError:
             self._calculate_leaf_value(target)
 
@@ -129,15 +131,15 @@ class Tree(object):
         """Find optimal value for leaf."""
         if self.loss is not None:
             # Gradient boosting
-            self.outcome = self.loss.approximate(targets['actual'], targets['y_pred'])
+            self.outcome = self.loss.approximate(targets["actual"], targets["y_pred"])
         else:
             # Random Forest
             if self.regression:
                 # Mean value for regression task
-                self.outcome = np.mean(targets['y'])
+                self.outcome = np.mean(targets["y"])
             else:
                 # Probability for classification task
-                self.outcome = stats.itemfreq(targets['y'])[:, 1] / float(targets['y'].shape[0])
+                self.outcome = stats.itemfreq(targets["y"])[:, 1] / float(targets["y"].shape[0])
 
     def predict_row(self, row):
         """Predict single row."""

@@ -12,8 +12,9 @@ Factorization Machines http://www.csie.ntu.edu.tw/~b97053/paper/Rendle2010FM.pdf
 
 
 class BaseFM(BaseEstimator):
-    def __init__(self, n_components=10, max_iter=100, init_stdev=0.1, learning_rate=0.01, reg_v=0.1,
-                 reg_w=0.5, reg_w0=0.):
+    def __init__(
+        self, n_components=10, max_iter=100, init_stdev=0.1, learning_rate=0.01, reg_v=0.1, reg_w=0.5, reg_w0=0.0
+    ):
         """Simplified factorization machines implementation using SGD optimizer."""
         self.reg_w0 = reg_w0
         self.reg_w = reg_w
@@ -52,7 +53,7 @@ class BaseFM(BaseEstimator):
 
     def _predict(self, X=None):
         linear_output = np.dot(X, self.w)
-        factors_output = np.sum(np.dot(X, self.v) ** 2 - np.dot(X ** 2, self.v ** 2), axis=1) / 2.
+        factors_output = np.sum(np.dot(X, self.v) ** 2 - np.dot(X ** 2, self.v ** 2), axis=1) / 2.0
         return self.wo + linear_output + factors_output
 
 

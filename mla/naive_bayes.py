@@ -5,6 +5,7 @@ from mla.neuralnet.activations import softmax
 
 class NaiveBayesClassifier(BaseEstimator):
     """Gaussian Naive Bayes."""
+
     # Binary problem.
     n_classes = 2
 

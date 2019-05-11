@@ -10,24 +10,19 @@ logging.basicConfig(level=logging.CRITICAL)
 
 def mlp_model(n_actions, batch_size=64):
     model = NeuralNet(
-        layers=[
-            Dense(32),
-            Activation('relu'),
-            Dense(n_actions),
-        ],
-        loss='mse',
+        layers=[Dense(32), Activation("relu"), Dense(n_actions)],
+        loss="mse",
         optimizer=Adam(),
-        metric='mse',
+        metric="mse",
         batch_size=batch_size,
         max_epochs=1,
         verbose=False,
-
     )
     return model
 
 
 model = DQN(n_episodes=2500, batch_size=64)
-model.init_environment('CartPole-v0')
+model.init_environment("CartPole-v0")
 model.init_model(mlp_model)
 
 try:

@@ -21,8 +21,9 @@ https://github.com/andersbll/deeppy
 class NeuralNet(BaseEstimator):
     fit_required = False
 
-    def __init__(self, layers, optimizer, loss, max_epochs=10, batch_size=64, metric='mse',
-                 shuffle=False, verbose=True):
+    def __init__(
+        self, layers, optimizer, loss, max_epochs=10, batch_size=64, metric="mse", shuffle=False, verbose=True
+    ):
         self.verbose = verbose
         self.shuffle = shuffle
         self.optimizer = optimizer
@@ -30,7 +31,7 @@ class NeuralNet(BaseEstimator):
         self.loss = get_loss(loss)
 
         # TODO: fix
-        if loss == 'categorical_crossentropy':
+        if loss == "categorical_crossentropy":
             self.loss_grad = lambda actual, predicted: -(actual - predicted)
         else:
             self.loss_grad = elementwise_grad(self.loss, 1)
@@ -58,12 +59,12 @@ class NeuralNet(BaseEstimator):
         # Setup optimizer
         self.optimizer.setup(self)
         self._initialized = True
-        logging.info('Total parameters: %s' % self.n_params)
+        logging.info("Total parameters: %s" % self.n_params)
 
     def _find_bprop_entry(self):
         """Find entry layer for back propagation."""
 
-        if len(self.layers) > 0 and not hasattr(self.layers[-1], 'parameters'):
+        if len(self.layers) > 0 and not hasattr(self.layers[-1], "parameters"):
             return -1
         return len(self.layers)
 
@@ -87,7 +88,7 @@ class NeuralNet(BaseEstimator):
 
         # Backward pass
         grad = self.loss_grad(y, y_pred)
-        for layer in reversed(self.layers[:self.bprop_entry]):
+        for layer in reversed(self.layers[: self.bprop_entry]):
             grad = layer.backward_pass(grad)
         return self.loss(y, y_pred)
 
@@ -110,7 +111,7 @@ class NeuralNet(BaseEstimator):
     @property
     def parametric_layers(self):
         for layer in self.layers:
-            if hasattr(layer, 'parameters'):
+            if hasattr(layer, "parameters"):
                 yield layer
 
     @property

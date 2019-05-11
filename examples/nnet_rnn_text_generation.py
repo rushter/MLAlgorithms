@@ -18,9 +18,10 @@ logging.basicConfig(level=logging.DEBUG)
 
 # Example taken from: https://github.com/fchollet/keras/blob/master/examples/lstm_text_generation.py
 
+
 def sample(preds, temperature=1.0):
     # helper function to sample an index from a probability array
-    preds = np.asarray(preds).astype('float64')
+    preds = np.asarray(preds).astype("float64")
     preds = np.log(preds) / temperature
     exp_preds = np.exp(preds)
     preds = exp_preds / np.sum(exp_preds)
@@ -38,7 +39,7 @@ y = y[0:items_count]
 print(X.shape, y.shape)
 # LSTM OR RNN
 # rnn_layer = RNN(128, return_sequences=False)
-rnn_layer = LSTM(128, return_sequences=False, )
+rnn_layer = LSTM(128, return_sequences=False)
 
 model = NeuralNet(
     layers=[
@@ -46,30 +47,29 @@ model = NeuralNet(
         # Flatten(),
         # TimeStepSlicer(-1),
         Dense(X.shape[2]),
-        Activation('softmax'),
+        Activation("softmax"),
     ],
-    loss='categorical_crossentropy',
+    loss="categorical_crossentropy",
     optimizer=RMSprop(learning_rate=0.01),
-    metric='accuracy',
+    metric="accuracy",
     batch_size=64,
     max_epochs=1,
     shuffle=False,
-
 )
 
 for _ in range(25):
     model.fit(X, y)
     start_index = random.randint(0, len(text) - maxlen - 1)
 
-    generated = ''
-    sentence = text[start_index: start_index + maxlen]
+    generated = ""
+    sentence = text[start_index : start_index + maxlen]
     generated += sentence
     print('----- Generating with seed: "' + sentence + '"')
     sys.stdout.write(generated)
     for i in range(100):
         x = np.zeros((64, maxlen, len(chars)))
         for t, char in enumerate(sentence):
-            x[0, t, char_indices[char]] = 1.
+            x[0, t, char_indices[char]] = 1.0
         preds = model.predict(x)[0]
         next_index = sample(preds, 0.5)
         next_char = indices_char[next_index]
