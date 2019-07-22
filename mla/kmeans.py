@@ -131,7 +131,7 @@ class KMeans(BaseEstimator):
 
     def plot(self, ax=None, holdon=False):
         sns.set(style="white")
-
+        palette = sns.color_palette("hls", self.K + 1)
         data = self.X
 
         if ax is None:
@@ -139,7 +139,7 @@ class KMeans(BaseEstimator):
 
         for i, index in enumerate(self.clusters):
             point = np.array(data[index]).T
-            ax.scatter(*point, c=sns.color_palette("hls", self.K + 1)[i])
+            ax.scatter(*point, c=[palette[i], ])
 
         for point in self.centroids:
             ax.scatter(*point, marker="x", linewidths=10)
