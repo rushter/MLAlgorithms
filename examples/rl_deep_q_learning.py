@@ -31,7 +31,7 @@ try:
     # You can stop training process using Ctrl+C signal
     # Read more about this problem: https://gym.openai.com/envs/CartPole-v0
     model.train(render=False)
-except:
+except KeyboardInterrupt:
     pass
 # Render trained model
 model.play(episodes=100)

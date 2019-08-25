@@ -1,3 +1,5 @@
+# coding:utf-8
+
 from mla.base import BaseEstimator
 from mla.metrics import mean_squared_error, binary_crossentropy
 import autograd.numpy as np

@@ -1,3 +1,4 @@
+# coding:utf-8
 import autograd.numpy as np
 
 EPS = 1e-15
@@ -83,5 +84,5 @@ def get_metric(name):
     """Return metric function by name"""
     try:
         return globals()[name]
-    except:
+    except Exception:
         raise ValueError("Invalid metric function.")

@@ -1,3 +1,5 @@
+# coding:utf-8
+
 import random
 import seaborn as sns
 import matplotlib.pyplot as plt

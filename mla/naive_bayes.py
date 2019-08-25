@@ -1,3 +1,5 @@
+# coding:utf-8
+
 import numpy as np
 from mla.base import BaseEstimator
 from mla.neuralnet.activations import softmax

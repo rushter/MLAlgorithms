@@ -1,3 +1,5 @@
+# coding:utf-8
+
 import random
 import numpy as np
 from scipy.stats import multivariate_normal
@@ -65,7 +67,7 @@ class GaussianMixture(BaseEstimator):
         self.weights = np.ones(self.K)
         if self.init == "random":
             self.means = [self.X[x] for x in random.sample(range(self.n_samples), self.K)]
-            self.covs = [np.cov(self.X.T) for _ in range(K)]
+            self.covs = [np.cov(self.X.T) for _ in range(self.K)]
 
         elif self.init == "kmeans":
             kmeans = KMeans(K=self.K, max_iters=self.max_iters // 3, init="++")

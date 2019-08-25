@@ -47,5 +47,5 @@ def get_activation(name):
     """Return activation function by name"""
     try:
         return globals()[name]
-    except:
+    except Exception:
         raise ValueError("Invalid activation function.")

@@ -1,3 +1,4 @@
+# coding:utf-8
 import os
 import numpy as np
 
@@ -60,7 +61,7 @@ def load_nietzsche():
     sentences = []
     next_chars = []
     for i in range(0, len(text) - maxlen, step):
-        sentences.append(text[i : i + maxlen])
+        sentences.append(text[i: i + maxlen])
         next_chars.append(text[i + maxlen])
 
     X = np.zeros((len(sentences), maxlen, len(chars)), dtype=np.bool)

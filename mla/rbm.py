@@ -1,3 +1,4 @@
+# coding:utf-8
 import logging
 
 from mla.base import BaseEstimator
@@ -52,7 +53,7 @@ class RBM(BaseEstimator):
         self.errors = []
 
     def _train(self):
-        """Use CD-1 training procedure, basically an exact inference for `positive_associations`, 
+        """Use CD-1 training procedure, basically an exact inference for `positive_associations`,
         followed by a "non burn-in" block Gibbs Sampling for the `negative_associations`."""
 
         for i in range(self.max_epochs):

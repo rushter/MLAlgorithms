@@ -13,7 +13,7 @@ def print_curve(rbm):
     def moving_average(a, n=25):
         ret = np.cumsum(a, dtype=float)
         ret[n:] = ret[n:] - ret[:-n]
-        return ret[n - 1 :] / n
+        return ret[n - 1:] / n
 
     plt.plot(moving_average(rbm.errors))
     plt.show()

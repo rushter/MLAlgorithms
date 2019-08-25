@@ -145,7 +145,7 @@ def image_to_column(images, filter_shape, stride, padding):
         y_bound = y + stride[0] * out_height
         for x in range(f_width):
             x_bound = x + stride[1] * out_width
-            col[:, :, y, x, :, :] = images[:, :, y : y_bound : stride[0], x : x_bound : stride[1]]
+            col[:, :, y, x, :, :] = images[:, :, y: y_bound: stride[0], x: x_bound: stride[1]]
 
     col = col.transpose(0, 4, 5, 1, 2, 3).reshape(n_images * out_height * out_width, -1)
     return col
@@ -177,9 +177,9 @@ def column_to_image(columns, images_shape, filter_shape, stride, padding):
         y_bound = y + stride[0] * out_height
         for x in range(f_width):
             x_bound = x + stride[1] * out_width
-            img[:, :, y : y_bound : stride[0], x : x_bound : stride[1]] += columns[:, :, y, x, :, :]
+            img[:, :, y: y_bound: stride[0], x: x_bound: stride[1]] += columns[:, :, y, x, :, :]
 
-    return img[:, :, padding[0] : height + padding[0], padding[1] : width + padding[1]]
+    return img[:, :, padding[0]: height + padding[0], padding[1]: width + padding[1]]
 
 
 def convoltuion_shape(img_height, img_width, filter_shape, stride, padding):

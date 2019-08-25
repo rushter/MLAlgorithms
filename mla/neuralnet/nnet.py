@@ -13,8 +13,9 @@ np.random.seed(9999)
 
 """
 Architecture inspired from:
-https://github.com/fchollet/keras
-https://github.com/andersbll/deeppy
+
+    https://github.com/fchollet/keras
+    https://github.com/andersbll/deeppy
 """
 
 

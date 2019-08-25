@@ -71,5 +71,5 @@ def get_initializer(name):
     """Returns initialization function by the name."""
     try:
         return globals()[name]
-    except:
+    except Exception:
         raise ValueError("Invalid initialization function.")
