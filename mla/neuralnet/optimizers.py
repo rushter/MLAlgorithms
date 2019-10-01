@@ -197,3 +197,31 @@ class Adam(Optimizer):
             for n in layer.parameters.keys():
                 self.ms[i][n] = np.zeros_like(layer.parameters[n])
                 self.vs[i][n] = np.zeros_like(layer.parameters[n])
+
+class Adamax(Optimizer):
+    def __init__(self, learning_rate=0.002, beta_1=0.9, beta_2=0.999, epsilon=1e-8):
+
+        self.epsilon = epsilon
+        self.beta_2 = beta_2
+        self.beta_1 = beta_1
+        self.lr = learning_rate
+        self.t = 1
+
+    def update(self, network):
+        for i, layer in enumerate(network.parametric_layers):
+            for n in layer.parameters.keys():
+                grad = layer.parameters.grad[n]
+                self.ms[i][n] = self.beta_1 * self.ms[i][n] + (1.0 - self.beta_1) * grad
+                self.us[i][n] = np.maximum(self.beta_2 * self.us[i][n], np.abs(grad))
+
+                step = self.lr / (1 - self.beta_1 ** self.t) * self.ms[i][n]/(self.us[i][n] + self.epsilon)
+                layer.parameters.step(n, -step)
+        self.t += 1
+
+    def setup(self, network):
+        self.ms = defaultdict(dict)
+        self.us = defaultdict(dict)
+        for i, layer in enumerate(network.parametric_layers):
+            for n in layer.parameters.keys():
+                self.ms[i][n] = np.zeros_like(layer.parameters[n])
+                self.us[i][n] = np.zeros_like(layer.parameters[n])
