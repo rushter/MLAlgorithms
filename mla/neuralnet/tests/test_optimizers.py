@@ -46,6 +46,8 @@ def test_adadelta():
 def test_adam():
     assert clasifier(Adam()) > 0.9
 
+def test_adamax():
+    assert clasifier(Adamax()) > 0.9
 
 def test_rmsprop():
     assert clasifier(RMSprop()) > 0.9
