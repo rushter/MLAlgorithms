@@ -50,8 +50,8 @@ def test_svm_classification():
     y_signed_train = (y_train * 2) - 1
     y_signed_test = (y_test * 2) - 1
 
-    for kernel in [RBF(gamma=0.1), Linear()]:
-        model = SVM(max_iter=250, kernel=kernel)
+    for kernel in [RBF(gamma=0.05), Linear()]:
+        model = SVM(max_iter=500, kernel=kernel)
         model.fit(X_train, y_signed_train)
         predictions = model.predict(X_test)
         assert accuracy(y_signed_test, predictions) >= 0.8
