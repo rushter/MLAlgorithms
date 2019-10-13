@@ -24,21 +24,24 @@ All algorithms are implemented in Python, using numpy, scipy and autograd.
 
 
 ### Installation
+```sh
         git clone https://github.com/rushter/MLAlgorithms
         cd MLAlgorithms
         pip install scipy numpy
         python setup.py develop
-
+```
 ### How to run examples without installation
+```sh
         cd MLAlgorithms
         python -m examples.linear_models
-
+```
 ### How to run examples within Docker
+```sh
         cd MLAlgorithms
         docker build -t mlalgorithms .
         docker run --rm -it mlalgorithms bash
         python -m examples.linear_models
-
+```
 ### Contributing
 
 Your contributions are always welcome!  
