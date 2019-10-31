@@ -9,7 +9,7 @@ from scipy.spatial import distance
 from mla import knn
 from mla.metrics.metrics import mean_squared_error, accuracy
 
-
+import pandas as pd
 def regression():
     # Generate a random regression problem
     X, y = make_regression(
