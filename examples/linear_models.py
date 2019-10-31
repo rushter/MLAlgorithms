@@ -9,7 +9,7 @@ from sklearn.datasets import make_regression
 
 from mla.linear_models import LinearRegression, LogisticRegression
 from mla.metrics.metrics import mean_squared_error, accuracy
-
+import numpy as np
 # Change to DEBUG to see convergence
 logging.basicConfig(level=logging.ERROR)
 
