@@ -75,7 +75,7 @@ class SVM(BaseEstimator):
                 b1 = (
                     self.b
                     - e_i
-                    - self.y[i] * (self.alpha[i] - alpha_jo) * self.K[i, i]
+                    - self.y[i] * (self.alpha[i] - alpha_io) * self.K[i, i]
                     - self.y[j] * (self.alpha[j] - alpha_jo) * self.K[i, j]
                 )
                 b2 = (
