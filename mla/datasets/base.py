@@ -51,7 +51,7 @@ def load_mnist():
 
 
 def load_nietzsche():
-    text = open(get_filename("data/nietzsche.txt")).read().decode("utf-8").lower()
+    text = open(get_filename("data/nietzsche.txt")).read().lower() # str Object has already been decoded
     chars = set(list(text))
     char_indices = {ch: i for i, ch in enumerate(chars)}
     indices_char = {i: ch for i, ch in enumerate(chars)}
