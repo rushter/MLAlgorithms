@@ -39,6 +39,7 @@ class RandomForest(BaseEstimator):
         self._train()
 
     def _train(self):
+        n_classes = None if self.trees[0].regression else len(np.unique(self.y))
         for tree in self.trees:
             tree.train(
                 self.X,
@@ -46,6 +47,7 @@ class RandomForest(BaseEstimator):
                 max_features=self.max_features,
                 min_samples_split=self.min_samples_split,
                 max_depth=self.max_depth,
+                n_classes=n_classes
             )
 
     def _predict(self, X=None):
@@ -78,10 +80,14 @@ class RandomForestClassifier(RandomForest):
         for i in range(X.shape[0]):
             row_pred = np.zeros(y_shape)
             for tree in self.trees:
-                row_pred += tree.predict_row(X[i, :])
+                tmp = tree.predict_row(X[i, :])
+                print(tmp,row_pred.shape,row_pred)
+                row_pred += tmp
+
 
             row_pred /= self.n_estimators
             predictions[i, :] = row_pred
+            print(f"i={i},{row_pred}\n")
         return predictions
 
 

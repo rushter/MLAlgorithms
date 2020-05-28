@@ -64,7 +64,8 @@ class Tree(object):
                     max_col, max_val, max_gain = column, value, gain
         return max_col, max_val, max_gain
 
-    def train(self, X, target, max_features=None, min_samples_split=10, max_depth=None, minimum_gain=0.01, loss=None):
+    def train(self, X, target, max_features=None, min_samples_split=10, max_depth=None, 
+                minimum_gain=0.01, loss=None, n_classes = None):
         """Build a decision tree from training set.
 
         Parameters
@@ -84,6 +85,8 @@ class Tree(object):
             Minimum gain required for splitting.
         loss : function, default None
             Loss function for gradient boosting.
+        n_classes : int, default None
+            No of unique labels in case of classification
         """
 
         if not isinstance(target, dict):
@@ -118,17 +121,17 @@ class Tree(object):
             # Grow left and right child
             self.left_child = Tree(self.regression, self.criterion)
             self.left_child.train(
-                left_X, left_target, max_features, min_samples_split, max_depth - 1, minimum_gain, loss
+                left_X, left_target, max_features, min_samples_split, max_depth - 1, minimum_gain, loss, n_classes
             )
 
             self.right_child = Tree(self.regression, self.criterion)
             self.right_child.train(
-                right_X, right_target, max_features, min_samples_split, max_depth - 1, minimum_gain, loss
+                right_X, right_target, max_features, min_samples_split, max_depth - 1, minimum_gain, loss, n_classes
             )
         except AssertionError:
-            self._calculate_leaf_value(target)
+            self._calculate_leaf_value(target, n_classes)
 
-    def _calculate_leaf_value(self, targets):
+    def _calculate_leaf_value(self, targets, n_classes):
         """Find optimal value for leaf."""
         if self.loss is not None:
             # Gradient boosting
@@ -140,7 +143,8 @@ class Tree(object):
                 self.outcome = np.mean(targets["y"])
             else:
                 # Probability for classification task
-                self.outcome = stats.itemfreq(targets["y"])[:, 1] / float(targets["y"].shape[0])
+                #self.outcome = stats.itemfreq(targets["y"])[:, 1] / float(targets["y"].shape[0])
+                self.outcome = np.bincount(targets["y"], minlength=n_classes) / targets["y"].shape[0]
 
     def predict_row(self, row):
         """Predict single row."""
