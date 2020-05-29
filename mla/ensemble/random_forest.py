@@ -80,14 +80,10 @@ class RandomForestClassifier(RandomForest):
         for i in range(X.shape[0]):
             row_pred = np.zeros(y_shape)
             for tree in self.trees:
-                tmp = tree.predict_row(X[i, :])
-                print(tmp,row_pred.shape,row_pred)
-                row_pred += tmp
-
+                row_pred += tree.predict_row(X[i, :])
 
             row_pred /= self.n_estimators
             predictions[i, :] = row_pred
-            print(f"i={i},{row_pred}\n")
         return predictions
 
 
