@@ -65,7 +65,7 @@ class Tree(object):
         return max_col, max_val, max_gain
 
     def train(self, X, target, max_features=None, min_samples_split=10, max_depth=None, 
-                minimum_gain=0.01, loss=None, n_classes=None):
+                minimum_gain=0.01, loss=None, n_classes=2):
         """Build a decision tree from training set.
 
         Parameters
@@ -85,7 +85,7 @@ class Tree(object):
             Minimum gain required for splitting.
         loss : function, default None
             Loss function for gradient boosting.
-        n_classes : int or None
+        n_classes : int
             No of unique labels in case of classification
         """
 
