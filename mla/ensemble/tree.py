@@ -12,7 +12,7 @@ random.seed(111)
 class Tree(object):
     """Recursive implementation of decision tree."""
 
-    def __init__(self, regression=False, criterion=None):
+    def __init__(self, regression=False, criterion=None, n_classes=None):
         self.regression = regression
         self.impurity = None
         self.threshold = None
@@ -20,6 +20,7 @@ class Tree(object):
         self.outcome = None
         self.criterion = criterion
         self.loss = None
+        self.n_classes = n_classes  #Only for classification
 
         self.left_child = None
         self.right_child = None
@@ -64,38 +65,7 @@ class Tree(object):
                     max_col, max_val, max_gain = column, value, gain
         return max_col, max_val, max_gain
 
-    def train(self, X, target, max_features=None, min_samples_split=10, max_depth=None, 
-                minimum_gain=0.01, loss=None, n_classes=2):
-        """Build a decision tree from training set.
-
-        Parameters
-        ----------
-
-        X : array-like
-            Feature dataset.
-        target : dictionary or array-like
-            Target values.
-        max_features : int or None
-            The number of features to consider when looking for the best split.
-        min_samples_split : int
-            The minimum number of samples required to split an internal node.
-        max_depth : int
-            Maximum depth of the tree.
-        minimum_gain : float, default 0.01
-            Minimum gain required for splitting.
-        loss : function, default None
-            Loss function for gradient boosting.
-        n_classes : int
-            No of unique labels in case of classification
-        """
-
-        if not isinstance(target, dict):
-            target = {"y": target}
-
-        # Loss for gradient boosting
-        if loss is not None:
-            self.loss = loss
-
+    def _train(self, X, target, max_features=None, min_samples_split=10, max_depth=None, minimum_gain=0.01):
         try:
             # Exit from recursion using assert syntax
             assert X.shape[0] > min_samples_split
@@ -119,19 +89,55 @@ class Tree(object):
             left_X, right_X, left_target, right_target = split_dataset(X, target, column, value)
 
             # Grow left and right child
-            self.left_child = Tree(self.regression, self.criterion)
-            self.left_child.train(
-                left_X, left_target, max_features, min_samples_split, max_depth - 1, minimum_gain, loss, n_classes
+            self.left_child = Tree(self.regression, self.criterion, self.n_classes)
+            self.left_child._train(
+                left_X, left_target, max_features, min_samples_split, max_depth - 1, minimum_gain
             )
 
-            self.right_child = Tree(self.regression, self.criterion)
-            self.right_child.train(
-                right_X, right_target, max_features, min_samples_split, max_depth - 1, minimum_gain, loss, n_classes
+            self.right_child = Tree(self.regression, self.criterion, self.n_classes)
+            self.right_child._train(
+                right_X, right_target, max_features, min_samples_split, max_depth - 1, minimum_gain
             )
         except AssertionError:
-            self._calculate_leaf_value(target, n_classes)
+            self._calculate_leaf_value(target)
 
-    def _calculate_leaf_value(self, targets, n_classes):
+    def train(self, X, target, max_features=None, min_samples_split=10, max_depth=None, minimum_gain=0.01, loss=None):
+        """Build a decision tree from training set.
+
+        Parameters
+        ----------
+
+        X : array-like
+            Feature dataset.
+        target : dictionary or array-like
+            Target values.
+        max_features : int or None
+            The number of features to consider when looking for the best split.
+        min_samples_split : int
+            The minimum number of samples required to split an internal node.
+        max_depth : int
+            Maximum depth of the tree.
+        minimum_gain : float, default 0.01
+            Minimum gain required for splitting.
+        loss : function, default None
+            Loss function for gradient boosting.
+        """
+
+        if not isinstance(target, dict):
+            target = {"y": target}
+
+        # Loss for gradient boosting
+        if loss is not None:
+            self.loss = loss
+
+        if self.regression==False:
+            self.n_classes = len(np.unique(target['y']))
+
+        self._train(X, target, max_features=max_features, min_samples_split=min_samples_split,
+                    max_depth=max_depth, minimum_gain=minimum_gain)
+
+
+    def _calculate_leaf_value(self, targets):
         """Find optimal value for leaf."""
         if self.loss is not None:
             # Gradient boosting
@@ -143,7 +149,7 @@ class Tree(object):
                 self.outcome = np.mean(targets["y"])
             else:
                 # Probability for classification task
-                self.outcome = np.bincount(targets["y"], minlength=n_classes) / targets["y"].shape[0]
+                self.outcome = np.bincount(targets["y"], minlength=self.n_classes) / targets["y"].shape[0]
 
     def predict_row(self, row):
         """Predict single row."""

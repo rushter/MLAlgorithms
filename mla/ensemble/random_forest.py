@@ -39,15 +39,13 @@ class RandomForest(BaseEstimator):
         self._train()
 
     def _train(self):
-        n_classes = None if self.trees[0].regression else len(np.unique(self.y))
         for tree in self.trees:
             tree.train(
                 self.X,
                 self.y,
                 max_features=self.max_features,
                 min_samples_split=self.min_samples_split,
-                max_depth=self.max_depth,
-                n_classes=n_classes
+                max_depth=self.max_depth
             )
 
     def _predict(self, X=None):
