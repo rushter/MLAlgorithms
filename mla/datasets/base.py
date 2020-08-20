@@ -19,6 +19,8 @@ def load_mnist():
         elif dataset == "test":
             fname_img = get_filename("data/mnist/t10k-images-idx3-ubyte")
             fname_lbl = get_filename("data/mnist/t10k-labels-idx1-ubyte")
+        else:
+            raise ValueError("Unexpected dataset name: %r" % dataset)
 
         flbl = open(fname_lbl, "rb")
         magic_nr, size = struct.unpack(">II", flbl.read(8))
@@ -36,7 +38,7 @@ def load_mnist():
         images = zeros((N, rows, cols), dtype=uint8)
         labels = zeros((N, 1), dtype=int8)
         for i in range(len(ind)):
-            images[i] = array(img[ind[i] * rows * cols : (ind[i] + 1) * rows * cols]).reshape((rows, cols))
+            images[i] = array(img[ind[i] * rows * cols: (ind[i] + 1) * rows * cols]).reshape((rows, cols))
             labels[i] = lbl[ind[i]]
 
         return images, labels

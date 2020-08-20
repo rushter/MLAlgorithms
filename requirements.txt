@@ -6,3 +6,4 @@ scipy>=0.18.0
 seaborn>=0.7.1
 six>=1.10.0
 autograd>=1.1.7
+gym
