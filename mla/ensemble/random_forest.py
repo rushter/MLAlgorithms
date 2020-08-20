@@ -4,7 +4,6 @@ import numpy as np
 from mla.base import BaseEstimator
 from mla.ensemble.base import information_gain, mse_criterion
 from mla.ensemble.tree import Tree
-from six.moves import range
 
 
 class RandomForest(BaseEstimator):

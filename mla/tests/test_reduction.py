@@ -1,8 +1,7 @@
 # coding=utf-8
 import pytest
-
-from sklearn.metrics import roc_auc_score
 from sklearn.datasets import make_classification
+from sklearn.metrics import roc_auc_score
 
 try:
     from sklearn.model_selection import train_test_split

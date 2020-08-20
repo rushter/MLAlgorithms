@@ -1,10 +1,10 @@
 # coding:utf-8
 
 import random
-import seaborn as sns
-import matplotlib.pyplot as plt
 
+import matplotlib.pyplot as plt
 import numpy as np
+import seaborn as sns
 
 from mla.base import BaseEstimator
 from mla.metrics.distance import euclidean_distance

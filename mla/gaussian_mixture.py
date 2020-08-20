@@ -1,9 +1,11 @@
 # coding:utf-8
 
 import random
+
+import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import multivariate_normal
-import matplotlib.pyplot as plt
+
 from mla.base import BaseEstimator
 from mla.kmeans import KMeans
 

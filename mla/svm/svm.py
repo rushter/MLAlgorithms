@@ -1,8 +1,10 @@
 # coding:utf-8
+import logging
+
+import numpy as np
+
 from mla.base import BaseEstimator
 from mla.svm.kernerls import Linear
-import numpy as np
-import logging
 
 np.random.seed(9999)
 

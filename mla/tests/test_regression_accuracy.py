@@ -12,7 +12,6 @@ from mla.neuralnet.layers import Activation, Dense
 from mla.neuralnet.optimizers import Adam
 from mla.neuralnet.parameters import Parameters
 
-
 # Generate a random regression problem
 X, y = make_regression(
     n_samples=1000, n_features=10, n_informative=10, n_targets=1, noise=0.05, random_state=1111, bias=0.5

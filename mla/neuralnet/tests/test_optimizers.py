@@ -1,6 +1,6 @@
-from sklearn.model_selection import train_test_split
 from sklearn.datasets import make_classification
 from sklearn.metrics import roc_auc_score
+from sklearn.model_selection import train_test_split
 
 from mla.neuralnet import NeuralNet
 from mla.neuralnet.layers import Dense, Activation, Dropout, Parameters
@@ -46,8 +46,10 @@ def test_adadelta():
 def test_adam():
     assert clasifier(Adam()) > 0.9
 
+
 def test_adamax():
     assert clasifier(Adamax()) > 0.9
+
 
 def test_rmsprop():
     assert clasifier(RMSprop()) > 0.9

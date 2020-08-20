@@ -1,7 +1,6 @@
 # coding:utf-8
 import autograd.numpy as np
 from autograd import elementwise_grad
-from six.moves import range
 
 from mla.neuralnet.initializations import get_initializer
 from mla.neuralnet.layers import Layer, get_activation, ParamMixin

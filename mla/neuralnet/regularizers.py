@@ -1,6 +1,6 @@
 # coding:utf-8
-from autograd import elementwise_grad
 import numpy as np
+from autograd import elementwise_grad
 
 
 class Regularizer(object):

@@ -1,10 +1,10 @@
 # coding:utf-8
 import logging
 
-from mla.base import BaseEstimator
-from scipy.special import expit
 import numpy as np
+from scipy.special import expit
 
+from mla.base import BaseEstimator
 from mla.utils import batch_iterator
 
 np.random.seed(9999)

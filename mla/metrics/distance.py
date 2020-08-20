@@ -1,6 +1,7 @@
 # coding:utf-8
-import numpy as np
 import math
+
+import numpy as np
 
 
 def euclidean_distance(a, b):

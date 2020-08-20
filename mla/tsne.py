@@ -2,7 +2,6 @@
 import logging
 
 import numpy as np
-from six.moves import range
 
 from mla.base import BaseEstimator
 from mla.metrics.distance import l2_distance

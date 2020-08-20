@@ -1,7 +1,8 @@
 # coding:utf-8
-from scipy.linalg import svd
-import numpy as np
 import logging
+
+import numpy as np
+from scipy.linalg import svd
 
 from mla.base import BaseEstimator
 

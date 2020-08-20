@@ -5,7 +5,6 @@ import random
 import gym
 import numpy as np
 from gym import wrappers
-from six.moves import range
 
 np.random.seed(9999)
 

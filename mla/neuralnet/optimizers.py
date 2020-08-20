@@ -215,7 +215,7 @@ class Adamax(Optimizer):
                 self.ms[i][n] = self.beta_1 * self.ms[i][n] + (1.0 - self.beta_1) * grad
                 self.us[i][n] = np.maximum(self.beta_2 * self.us[i][n], np.abs(grad))
 
-                step = self.lr / (1 - self.beta_1 ** self.t) * self.ms[i][n]/(self.us[i][n] + self.epsilon)
+                step = self.lr / (1 - self.beta_1 ** self.t) * self.ms[i][n] / (self.us[i][n] + self.epsilon)
                 layer.parameters.step(n, -step)
         self.t += 1
 

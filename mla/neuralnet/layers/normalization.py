@@ -1,7 +1,8 @@
 # coding:utf-8
+import numpy as np
+
 from mla.neuralnet.layers import Layer, PhaseMixin, ParamMixin
 from mla.neuralnet.parameters import Parameters
-import numpy as np
 
 """
 References:
