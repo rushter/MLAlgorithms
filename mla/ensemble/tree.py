@@ -20,7 +20,7 @@ class Tree(object):
         self.outcome = None
         self.criterion = criterion
         self.loss = None
-        self.n_classes = n_classes  #Only for classification
+        self.n_classes = n_classes  # Only for classification
 
         self.left_child = None
         self.right_child = None
@@ -130,7 +130,7 @@ class Tree(object):
         if loss is not None:
             self.loss = loss
 
-        if self.regression==False:
+        if not self.regression:
             self.n_classes = len(np.unique(target['y']))
 
         self._train(X, target, max_features=max_features, min_samples_split=min_samples_split,
