@@ -44,7 +44,7 @@ class RandomForest(BaseEstimator):
                 self.y,
                 max_features=self.max_features,
                 min_samples_split=self.min_samples_split,
-                max_depth=self.max_depth,
+                max_depth=self.max_depth
             )
 
     def _predict(self, X=None):
