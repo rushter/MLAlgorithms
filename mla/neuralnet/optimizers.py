@@ -10,7 +10,7 @@ from mla.utils import batch_iterator
 """
 References:
 
-    Gradient descent optimization algorithms  http://sebastianruder.com/optimizing-gradient-descent/index.html
+    Gradient descent optimization algorithms  https://ruder.io/optimizing-gradient-descent/
 """
 
 
