@@ -14,9 +14,17 @@ from mla.neuralnet.parameters import Parameters
 
 # Generate a random regression problem
 X, y = make_regression(
-    n_samples=1000, n_features=10, n_informative=10, n_targets=1, noise=0.05, random_state=1111, bias=0.5
+    n_samples=1000,
+    n_features=10,
+    n_informative=10,
+    n_targets=1,
+    noise=0.05,
+    random_state=1111,
+    bias=0.5,
 )
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=1111)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=1111
+)
 
 
 def test_linear():

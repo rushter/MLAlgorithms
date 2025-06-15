@@ -68,7 +68,9 @@ class GaussianMixture(BaseEstimator):
         """
         self.weights = np.ones(self.K)
         if self.init == "random":
-            self.means = [self.X[x] for x in random.sample(range(self.n_samples), self.K)]
+            self.means = [
+                self.X[x] for x in random.sample(range(self.n_samples), self.K)
+            ]
             self.covs = [np.cov(self.X.T) for _ in range(self.K)]
 
         elif self.init == "kmeans":
@@ -106,7 +108,9 @@ class GaussianMixture(BaseEstimator):
 
     def _is_converged(self):
         """Check if the difference of the latest two likelihood is less than the tolerance."""
-        if (len(self.likelihood) > 1) and (self.likelihood[-1] - self.likelihood[-2] <= self.tolerance):
+        if (len(self.likelihood) > 1) and (
+            self.likelihood[-1] - self.likelihood[-2] <= self.tolerance
+        ):
             return True
         return False
 
@@ -123,7 +127,9 @@ class GaussianMixture(BaseEstimator):
         n_data = data.shape[0]
         likelihoods = np.zeros([n_data, self.K])
         for c in range(self.K):
-            likelihoods[:, c] = multivariate_normal.pdf(data, self.means[c], self.covs[c])
+            likelihoods[:, c] = multivariate_normal.pdf(
+                data, self.means[c], self.covs[c]
+            )
         return likelihoods
 
     def _get_weighted_likelihood(self, likelihood):
@@ -151,7 +157,9 @@ class GaussianMixture(BaseEstimator):
         margin = 0.2
         xmax, ymax = self.X.max(axis=0) + margin
         xmin, ymin = self.X.min(axis=0) - margin
-        axis_X, axis_Y = np.meshgrid(np.arange(xmin, xmax, delta), np.arange(ymin, ymax, delta))
+        axis_X, axis_Y = np.meshgrid(
+            np.arange(xmin, xmax, delta), np.arange(ymin, ymax, delta)
+        )
 
         def grid_gaussian_pdf(mean, cov):
             grid_array = np.array(list(zip(axis_X.flatten(), axis_Y.flatten())))

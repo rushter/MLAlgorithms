@@ -45,7 +45,9 @@ class Optimizer(object):
 
         batch = zip(X_batch, y_batch)
         if network.verbose:
-            batch = tqdm(batch, total=int(np.ceil(network.n_samples / network.batch_size)))
+            batch = tqdm(
+                batch, total=int(np.ceil(network.n_samples / network.batch_size))
+            )
 
         for X, y in batch:
             loss = np.mean(network.update(X, y))
@@ -106,7 +108,7 @@ class Adagrad(Optimizer):
         for i, layer in enumerate(network.parametric_layers):
             for n in layer.parameters.keys():
                 grad = layer.parameters.grad[n]
-                self.accu[i][n] += grad ** 2
+                self.accu[i][n] += grad**2
                 step = self.lr * grad / (np.sqrt(self.accu[i][n]) + self.eps)
                 layer.parameters.step(n, -step)
 
@@ -128,12 +130,20 @@ class Adadelta(Optimizer):
         for i, layer in enumerate(network.parametric_layers):
             for n in layer.parameters.keys():
                 grad = layer.parameters.grad[n]
-                self.accu[i][n] = self.rho * self.accu[i][n] + (1.0 - self.rho) * grad ** 2
-                step = grad * np.sqrt(self.d_accu[i][n] + self.eps) / np.sqrt(self.accu[i][n] + self.eps)
+                self.accu[i][n] = (
+                    self.rho * self.accu[i][n] + (1.0 - self.rho) * grad**2
+                )
+                step = (
+                    grad
+                    * np.sqrt(self.d_accu[i][n] + self.eps)
+                    / np.sqrt(self.accu[i][n] + self.eps)
+                )
 
                 layer.parameters.step(n, -step * self.lr)
                 # Update delta accumulator
-                self.d_accu[i][n] = self.rho * self.d_accu[i][n] + (1.0 - self.rho) * step ** 2
+                self.d_accu[i][n] = (
+                    self.rho * self.d_accu[i][n] + (1.0 - self.rho) * step**2
+                )
 
     def setup(self, network):
         # Accumulators
@@ -155,7 +165,9 @@ class RMSprop(Optimizer):
         for i, layer in enumerate(network.parametric_layers):
             for n in layer.parameters.keys():
                 grad = layer.parameters.grad[n]
-                self.accu[i][n] = (self.rho * self.accu[i][n]) + (1.0 - self.rho) * (grad ** 2)
+                self.accu[i][n] = (self.rho * self.accu[i][n]) + (1.0 - self.rho) * (
+                    grad**2
+                )
                 step = self.lr * grad / (np.sqrt(self.accu[i][n]) + self.eps)
                 layer.parameters.step(n, -step)
 
@@ -169,7 +181,6 @@ class RMSprop(Optimizer):
 
 class Adam(Optimizer):
     def __init__(self, learning_rate=0.001, beta_1=0.9, beta_2=0.999, epsilon=1e-8):
-
         self.epsilon = epsilon
         self.beta_2 = beta_2
         self.beta_1 = beta_1
@@ -181,9 +192,17 @@ class Adam(Optimizer):
         for i, layer in enumerate(network.parametric_layers):
             for n in layer.parameters.keys():
                 grad = layer.parameters.grad[n]
-                self.ms[i][n] = (self.beta_1 * self.ms[i][n]) + (1.0 - self.beta_1) * grad
-                self.vs[i][n] = (self.beta_2 * self.vs[i][n]) + (1.0 - self.beta_2) * grad ** 2
-                lr = self.lr * np.sqrt(1.0 - self.beta_2 ** self.t) / (1.0 - self.beta_1 ** self.t)
+                self.ms[i][n] = (self.beta_1 * self.ms[i][n]) + (
+                    1.0 - self.beta_1
+                ) * grad
+                self.vs[i][n] = (self.beta_2 * self.vs[i][n]) + (
+                    1.0 - self.beta_2
+                ) * grad**2
+                lr = (
+                    self.lr
+                    * np.sqrt(1.0 - self.beta_2**self.t)
+                    / (1.0 - self.beta_1**self.t)
+                )
 
                 step = lr * self.ms[i][n] / (np.sqrt(self.vs[i][n]) + self.epsilon)
                 layer.parameters.step(n, -step)
@@ -201,7 +220,6 @@ class Adam(Optimizer):
 
 class Adamax(Optimizer):
     def __init__(self, learning_rate=0.002, beta_1=0.9, beta_2=0.999, epsilon=1e-8):
-
         self.epsilon = epsilon
         self.beta_2 = beta_2
         self.beta_1 = beta_1
@@ -215,7 +233,12 @@ class Adamax(Optimizer):
                 self.ms[i][n] = self.beta_1 * self.ms[i][n] + (1.0 - self.beta_1) * grad
                 self.us[i][n] = np.maximum(self.beta_2 * self.us[i][n], np.abs(grad))
 
-                step = self.lr / (1 - self.beta_1 ** self.t) * self.ms[i][n] / (self.us[i][n] + self.epsilon)
+                step = (
+                    self.lr
+                    / (1 - self.beta_1**self.t)
+                    * self.ms[i][n]
+                    / (self.us[i][n] + self.epsilon)
+                )
                 layer.parameters.step(n, -step)
         self.t += 1
 

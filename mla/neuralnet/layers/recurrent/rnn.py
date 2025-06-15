@@ -10,7 +10,14 @@ from mla.neuralnet.parameters import Parameters
 class RNN(Layer, ParamMixin):
     """Vanilla RNN."""
 
-    def __init__(self, hidden_dim, activation="tanh", inner_init="orthogonal", parameters=None, return_sequences=True):
+    def __init__(
+        self,
+        hidden_dim,
+        activation="tanh",
+        inner_init="orthogonal",
+        parameters=None,
+        return_sequences=True,
+    ):
         self.return_sequences = return_sequences
         self.hidden_dim = hidden_dim
         self.inner_init = get_initializer(inner_init)
@@ -53,7 +60,11 @@ class RNN(Layer, ParamMixin):
         p = self._params
 
         for i in range(n_timesteps):
-            states[:, i, :] = np.tanh(np.dot(X[:, i, :], p["W"]) + np.dot(states[:, i - 1, :], p["U"]) + p["b"])
+            states[:, i, :] = np.tanh(
+                np.dot(X[:, i, :], p["W"])
+                + np.dot(states[:, i - 1, :], p["U"])
+                + p["b"]
+            )
 
         self.states = states
         self.hprev = states[:, n_timesteps - 1, :].copy()

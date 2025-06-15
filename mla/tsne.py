@@ -19,7 +19,9 @@ https://lvdmaaten.github.io/tsne/code/tsne_python.zip
 class TSNE(BaseEstimator):
     y_required = False
 
-    def __init__(self, n_components=2, perplexity=30.0, max_iter=200, learning_rate=500):
+    def __init__(
+        self, n_components=2, perplexity=30.0, max_iter=200, learning_rate=500
+    ):
         """A t-Distributed Stochastic Neighbor Embedding implementation.
 
         Parameters
@@ -67,7 +69,9 @@ class TSNE(BaseEstimator):
                 grad = 4 * np.dot((pmul * P[i] - Q_n[i]) * Q[i], Y[i] - Y)
                 grads[i] = grad
 
-            gains = (gains + 0.2) * ((grads > 0) != (velocity > 0)) + (gains * 0.8) * ((grads > 0) == (velocity > 0))
+            gains = (gains + 0.2) * ((grads > 0) != (velocity > 0)) + (gains * 0.8) * (
+                (grads > 0) == (velocity > 0)
+            )
             gains = gains.clip(min=self.min_gain)
 
             velocity = momentum * velocity - self.lr * (gains * grads)

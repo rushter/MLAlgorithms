@@ -71,15 +71,21 @@ class SVM(BaseEstimator):
                 self.alpha[j] -= (self.y[j] * (e_i - e_j)) / eta
                 self.alpha[j] = self.clip(self.alpha[j], H, L)
 
-                self.alpha[i] = self.alpha[i] + self.y[i] * self.y[j] * (alpha_jo - self.alpha[j])
+                self.alpha[i] = self.alpha[i] + self.y[i] * self.y[j] * (
+                    alpha_jo - self.alpha[j]
+                )
 
                 # Find intercept
                 b1 = (
-                    self.b - e_i - self.y[i] * (self.alpha[i] - alpha_io) * self.K[i, i]
+                    self.b
+                    - e_i
+                    - self.y[i] * (self.alpha[i] - alpha_io) * self.K[i, i]
                     - self.y[j] * (self.alpha[j] - alpha_jo) * self.K[i, j]
                 )
                 b2 = (
-                    self.b - e_j - self.y[j] * (self.alpha[j] - alpha_jo) * self.K[j, j]
+                    self.b
+                    - e_j
+                    - self.y[j] * (self.alpha[j] - alpha_jo) * self.K[j, j]
                     - self.y[i] * (self.alpha[i] - alpha_io) * self.K[i, j]
                 )
                 if 0 < self.alpha[i] < self.C:

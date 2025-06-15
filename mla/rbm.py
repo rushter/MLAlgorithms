@@ -43,7 +43,6 @@ class RBM(BaseEstimator):
         self._train()
 
     def _init_weights(self):
-
         self.W = np.random.randn(self.n_visible, self.n_hidden) * 0.1
 
         # Bias for visible and hidden units
@@ -63,15 +62,29 @@ class RBM(BaseEstimator):
                 hidden_states = self._sample(positive_hidden)  # sample hidden state h1
                 positive_associations = np.dot(batch.T, positive_hidden)
 
-                negative_visible = sigmoid(np.dot(hidden_states, self.W.T) + self.bias_v)
-                negative_visible = self._sample(negative_visible)  # use the sampled hidden state h1 to sample v1
-                negative_hidden = sigmoid(np.dot(negative_visible, self.W) + self.bias_h)
+                negative_visible = sigmoid(
+                    np.dot(hidden_states, self.W.T) + self.bias_v
+                )
+                negative_visible = self._sample(
+                    negative_visible
+                )  # use the sampled hidden state h1 to sample v1
+                negative_hidden = sigmoid(
+                    np.dot(negative_visible, self.W) + self.bias_h
+                )
                 negative_associations = np.dot(negative_visible.T, negative_hidden)
 
                 lr = self.lr / float(batch.shape[0])
-                self.W += lr * ((positive_associations - negative_associations) / float(self.batch_size))
-                self.bias_h += lr * (negative_hidden.sum(axis=0) - negative_associations.sum(axis=0))
-                self.bias_v += lr * (np.asarray(batch.sum(axis=0)).squeeze() - negative_visible.sum(axis=0))
+                self.W += lr * (
+                    (positive_associations - negative_associations)
+                    / float(self.batch_size)
+                )
+                self.bias_h += lr * (
+                    negative_hidden.sum(axis=0) - negative_associations.sum(axis=0)
+                )
+                self.bias_v += lr * (
+                    np.asarray(batch.sum(axis=0)).squeeze()
+                    - negative_visible.sum(axis=0)
+                )
 
                 error += np.sum((batch - negative_visible) ** 2)
 

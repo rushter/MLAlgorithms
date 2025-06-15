@@ -25,11 +25,11 @@ class L1(Regularizer):
 
 class L2(Regularizer):
     def _penalty(self, weights):
-        return self.C * weights ** 2
+        return self.C * weights**2
 
 
 class ElasticNet(Regularizer):
     """Linear combination of L1 and L2 penalties."""
 
     def _penalty(self, weights):
-        return 0.5 * self.C * weights ** 2 + (1.0 - self.C) * np.abs(weights)
+        return 0.5 * self.C * weights**2 + (1.0 - self.C) * np.abs(weights)

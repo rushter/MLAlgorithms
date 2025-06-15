@@ -1,5 +1,6 @@
 # coding:utf-8
 import numpy as np
+
 # logistic function
 from scipy.special import expit
 
@@ -32,7 +33,9 @@ class Loss:
 
     def approximate(self, actual, predicted):
         """Approximate leaf value."""
-        return self.grad(actual, predicted).sum() / (self.hess(actual, predicted).sum() + self.regularization)
+        return self.grad(actual, predicted).sum() / (
+            self.hess(actual, predicted).sum() + self.regularization
+        )
 
     def transform(self, pred):
         """Transform predictions values."""
@@ -73,7 +76,14 @@ class LogisticLoss(Loss):
 class GradientBoosting(BaseEstimator):
     """Gradient boosting trees with Taylor's expansion approximation (as in xgboost)."""
 
-    def __init__(self, n_estimators, learning_rate=0.1, max_features=10, max_depth=2, min_samples_split=10):
+    def __init__(
+        self,
+        n_estimators,
+        learning_rate=0.1,
+        max_features=10,
+        max_depth=2,
+        min_samples_split=10,
+    ):
         self.min_samples_split = min_samples_split
         self.learning_rate = learning_rate
         self.max_depth = max_depth

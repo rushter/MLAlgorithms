@@ -14,6 +14,8 @@ def test_softplus():
     # naive implementation of np.log(1 + np.exp(z_max)) will overflow
     # naive implementation of z + np.log(1 + 1 / np.exp(z_min)) will
     # throw ZeroDivisionError
-    outputs = np.array([np.log(2.0), np.log1p(np.exp(1.0)), np.log1p(np.exp(-1.0)), 0.0, z_max])
+    outputs = np.array(
+        [np.log(2.0), np.log1p(np.exp(1.0)), np.log1p(np.exp(-1.0)), 0.0, z_max]
+    )
 
     assert np.allclose(outputs, softplus(inputs))

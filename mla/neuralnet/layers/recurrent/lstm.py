@@ -15,7 +15,14 @@ A Critical Review of Recurrent Neural Networks for Sequence Learning http://arxi
 
 
 class LSTM(Layer, ParamMixin):
-    def __init__(self, hidden_dim, activation="tanh", inner_init="orthogonal", parameters=None, return_sequences=True):
+    def __init__(
+        self,
+        hidden_dim,
+        activation="tanh",
+        inner_init="orthogonal",
+        parameters=None,
+        return_sequences=True,
+    ):
         self.return_sequences = return_sequences
         self.hidden_dim = hidden_dim
         self.inner_init = get_initializer(inner_init)
@@ -84,13 +91,18 @@ class LSTM(Layer, ParamMixin):
 
         self.states = np.zeros((n_samples, n_timesteps + 1, self.hidden_dim))
         self.outputs = np.zeros((n_samples, n_timesteps + 1, self.hidden_dim))
-        self.gates = {k: np.zeros((n_samples, n_timesteps, self.hidden_dim)) for k in ["i", "f", "o", "c"]}
+        self.gates = {
+            k: np.zeros((n_samples, n_timesteps, self.hidden_dim))
+            for k in ["i", "f", "o", "c"]
+        }
 
         self.states[:, -1, :] = self.hprev
         self.outputs[:, -1, :] = self.oprev
 
         for i in range(n_timesteps):
-            t_gates = np.dot(X[:, i, :], self.W) + np.dot(self.outputs[:, i - 1, :], self.U)
+            t_gates = np.dot(X[:, i, :], self.W) + np.dot(
+                self.outputs[:, i - 1, :], self.U
+            )
 
             # Input
             self.gates["i"][:, i, :] = sigmoid(t_gates[:, 0, :] + p["b_i"])
@@ -106,7 +118,9 @@ class LSTM(Layer, ParamMixin):
                 self.states[:, i - 1, :] * self.gates["f"][:, i, :]
                 + self.gates["i"][:, i, :] * self.gates["c"][:, i, :]
             )
-            self.outputs[:, i, :] = self.gates["o"][:, i, :] * self.activation(self.states[:, i, :])
+            self.outputs[:, i, :] = self.gates["o"][:, i, :] * self.activation(
+                self.states[:, i, :]
+            )
 
         self.hprev = self.states[:, n_timesteps - 1, :].copy()
         self.oprev = self.outputs[:, n_timesteps - 1, :].copy()
@@ -130,7 +144,12 @@ class LSTM(Layer, ParamMixin):
 
         # Backpropagation through time
         for i in reversed(range(n_timesteps)):
-            dhi = delta[:, i, :] * self.gates["o"][:, i, :] * self.activation_d(self.states[:, i, :]) + dh_next
+            dhi = (
+                delta[:, i, :]
+                * self.gates["o"][:, i, :]
+                * self.activation_d(self.states[:, i, :])
+                + dh_next
+            )
 
             og = delta[:, i, :] * self.activation(self.states[:, i, :])
             de_o = og * self.sigmoid_d(self.gates["o"][:, i, :])
@@ -139,17 +158,23 @@ class LSTM(Layer, ParamMixin):
             grad["U_o"] += np.dot(self.outputs[:, i - 1, :].T, de_o)
             grad["b_o"] += de_o.sum(axis=0)
 
-            de_f = (dhi * self.states[:, i - 1, :]) * self.sigmoid_d(self.gates["f"][:, i, :])
+            de_f = (dhi * self.states[:, i - 1, :]) * self.sigmoid_d(
+                self.gates["f"][:, i, :]
+            )
             grad["W_f"] += np.dot(self.last_input[:, i, :].T, de_f)
             grad["U_f"] += np.dot(self.outputs[:, i - 1, :].T, de_f)
             grad["b_f"] += de_f.sum(axis=0)
 
-            de_i = (dhi * self.gates["c"][:, i, :]) * self.sigmoid_d(self.gates["i"][:, i, :])
+            de_i = (dhi * self.gates["c"][:, i, :]) * self.sigmoid_d(
+                self.gates["i"][:, i, :]
+            )
             grad["W_i"] += np.dot(self.last_input[:, i, :].T, de_i)
             grad["U_i"] += np.dot(self.outputs[:, i - 1, :].T, de_i)
             grad["b_i"] += de_i.sum(axis=0)
 
-            de_c = (dhi * self.gates["i"][:, i, :]) * self.activation_d(self.gates["c"][:, i, :])
+            de_c = (dhi * self.gates["i"][:, i, :]) * self.activation_d(
+                self.gates["c"][:, i, :]
+            )
             grad["W_c"] += np.dot(self.last_input[:, i, :].T, de_c)
             grad["U_c"] += np.dot(self.outputs[:, i - 1, :].T, de_c)
             grad["b_c"] += de_c.sum(axis=0)

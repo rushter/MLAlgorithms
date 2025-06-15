@@ -10,13 +10,20 @@ from mla.utils import one_hot
 
 def clasifier(optimizer):
     X, y = make_classification(
-        n_samples=1000, n_features=100, n_informative=75, random_state=1111, n_classes=2, class_sep=2.5
+        n_samples=1000,
+        n_features=100,
+        n_informative=75,
+        random_state=1111,
+        n_classes=2,
+        class_sep=2.5,
     )
     y = one_hot(y)
 
     X -= np.mean(X, axis=0)
     X /= np.std(X, axis=0)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.15, random_state=1111)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.15, random_state=1111
+    )
 
     model = NeuralNet(
         layers=[

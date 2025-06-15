@@ -23,7 +23,15 @@ class NeuralNet(BaseEstimator):
     fit_required = False
 
     def __init__(
-        self, layers, optimizer, loss, max_epochs=10, batch_size=64, metric="mse", shuffle=False, verbose=True
+        self,
+        layers,
+        optimizer,
+        loss,
+        max_epochs=10,
+        batch_size=64,
+        metric="mse",
+        shuffle=False,
+        verbose=True,
     ):
         self.verbose = verbose
         self.shuffle = shuffle

@@ -47,7 +47,7 @@ class BatchNormalization(Layer, ParamMixin, PhaseMixin):
         xmu = X - mu
 
         # step3: following the lower branch - calculation denominator
-        sq = xmu ** 2
+        sq = xmu**2
 
         # step4: calculate variance
         var = 1.0 / N * np.sum(sq, axis=0)
@@ -90,7 +90,9 @@ class BatchNormalization(Layer, ParamMixin, PhaseMixin):
             out_flat = self._forward_pass(x_flat)
             return out_flat.reshape(N, H, W, C).transpose(0, 3, 1, 2)
         else:
-            raise NotImplementedError("Unknown model with dimensions = {}".format(len(X.shape)))
+            raise NotImplementedError(
+                "Unknown model with dimensions = {}".format(len(X.shape))
+            )
 
     def _backward_pass(self, delta):
         # unfold the variables stored in cache
@@ -112,7 +114,7 @@ class BatchNormalization(Layer, ParamMixin, PhaseMixin):
         dxmu1 = dxhat * ivar
 
         # step6
-        dsqrtvar = -1.0 / (sqrtvar ** 2) * divar
+        dsqrtvar = -1.0 / (sqrtvar**2) * divar
 
         # step5
         dvar = 0.5 * 1.0 / np.sqrt(var + self.eps) * dsqrtvar

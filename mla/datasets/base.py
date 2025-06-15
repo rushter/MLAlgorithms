@@ -39,7 +39,9 @@ def load_mnist():
         images = zeros((N, rows, cols), dtype=uint8)
         labels = zeros((N, 1), dtype=int8)
         for i in range(len(ind)):
-            images[i] = array(img[ind[i] * rows * cols: (ind[i] + 1) * rows * cols]).reshape((rows, cols))
+            images[i] = array(
+                img[ind[i] * rows * cols : (ind[i] + 1) * rows * cols]
+            ).reshape((rows, cols))
             labels[i] = lbl[ind[i]]
 
         return images, labels
@@ -64,7 +66,7 @@ def load_nietzsche():
     sentences = []
     next_chars = []
     for i in range(0, len(text) - maxlen, step):
-        sentences.append(text[i: i + maxlen])
+        sentences.append(text[i : i + maxlen])
         next_chars.append(text[i + maxlen])
 
     X = np.zeros((len(sentences), maxlen, len(chars)), dtype=np.bool)

@@ -5,7 +5,14 @@ from mla.neuralnet.initializations import get_initializer
 
 
 class Parameters(object):
-    def __init__(self, init="glorot_uniform", scale=0.5, bias=1.0, regularizers=None, constraints=None):
+    def __init__(
+        self,
+        init="glorot_uniform",
+        scale=0.5,
+        bias=1.0,
+        regularizers=None,
+        constraints=None,
+    ):
         """A container for layer's parameters.
 
         Parameters

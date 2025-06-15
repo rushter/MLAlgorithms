@@ -15,7 +15,7 @@ class MaxNorm(object):
         self.m = m
 
     def clip(self, p):
-        norms = np.sqrt(np.sum(p ** 2, axis=self.axis))
+        norms = np.sqrt(np.sum(p**2, axis=self.axis))
         desired = np.clip(norms, 0, self.m)
         p = p * (desired / (EPSILON + norms))
         return p
@@ -37,4 +37,4 @@ class UnitNorm(Constraint):
         self.axis = axis
 
     def clip(self, p):
-        return p / (EPSILON + np.sqrt(np.sum(p ** 2, axis=self.axis)))
+        return p / (EPSILON + np.sqrt(np.sum(p**2, axis=self.axis)))

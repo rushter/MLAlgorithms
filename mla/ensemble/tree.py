@@ -58,14 +58,24 @@ class Tree(object):
                     gain = self.criterion(target["y"], splits)
                 else:
                     # Gradient boosting
-                    left, right = split_dataset(X, target, column, value, return_X=False)
+                    left, right = split_dataset(
+                        X, target, column, value, return_X=False
+                    )
                     gain = xgb_criterion(target, left, right, self.loss)
 
                 if (max_gain is None) or (gain > max_gain):
                     max_col, max_val, max_gain = column, value, gain
         return max_col, max_val, max_gain
 
-    def _train(self, X, target, max_features=None, min_samples_split=10, max_depth=None, minimum_gain=0.01):
+    def _train(
+        self,
+        X,
+        target,
+        max_features=None,
+        min_samples_split=10,
+        max_depth=None,
+        minimum_gain=0.01,
+    ):
         try:
             # Exit from recursion using assert syntax
             assert X.shape[0] > min_samples_split
@@ -86,22 +96,43 @@ class Tree(object):
             self.impurity = gain
 
             # Split dataset
-            left_X, right_X, left_target, right_target = split_dataset(X, target, column, value)
+            left_X, right_X, left_target, right_target = split_dataset(
+                X, target, column, value
+            )
 
             # Grow left and right child
             self.left_child = Tree(self.regression, self.criterion, self.n_classes)
             self.left_child._train(
-                left_X, left_target, max_features, min_samples_split, max_depth - 1, minimum_gain
+                left_X,
+                left_target,
+                max_features,
+                min_samples_split,
+                max_depth - 1,
+                minimum_gain,
             )
 
             self.right_child = Tree(self.regression, self.criterion, self.n_classes)
             self.right_child._train(
-                right_X, right_target, max_features, min_samples_split, max_depth - 1, minimum_gain
+                right_X,
+                right_target,
+                max_features,
+                min_samples_split,
+                max_depth - 1,
+                minimum_gain,
             )
         except AssertionError:
             self._calculate_leaf_value(target)
 
-    def train(self, X, target, max_features=None, min_samples_split=10, max_depth=None, minimum_gain=0.01, loss=None):
+    def train(
+        self,
+        X,
+        target,
+        max_features=None,
+        min_samples_split=10,
+        max_depth=None,
+        minimum_gain=0.01,
+        loss=None,
+    ):
         """Build a decision tree from training set.
 
         Parameters
@@ -131,11 +162,16 @@ class Tree(object):
             self.loss = loss
 
         if not self.regression:
-            self.n_classes = len(np.unique(target['y']))
+            self.n_classes = len(np.unique(target["y"]))
 
-        self._train(X, target, max_features=max_features, min_samples_split=min_samples_split,
-                    max_depth=max_depth, minimum_gain=minimum_gain)
-
+        self._train(
+            X,
+            target,
+            max_features=max_features,
+            min_samples_split=min_samples_split,
+            max_depth=max_depth,
+            minimum_gain=minimum_gain,
+        )
 
     def _calculate_leaf_value(self, targets):
         """Find optimal value for leaf."""
@@ -149,7 +185,10 @@ class Tree(object):
                 self.outcome = np.mean(targets["y"])
             else:
                 # Probability for classification task
-                self.outcome = np.bincount(targets["y"], minlength=self.n_classes) / targets["y"].shape[0]
+                self.outcome = (
+                    np.bincount(targets["y"], minlength=self.n_classes)
+                    / targets["y"].shape[0]
+                )
 
     def predict_row(self, row):
         """Predict single row."""

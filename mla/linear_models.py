@@ -12,7 +12,9 @@ np.random.seed(1000)
 
 
 class BasicRegression(BaseEstimator):
-    def __init__(self, lr=0.001, penalty="None", C=0.01, tolerance=0.0001, max_iters=1000):
+    def __init__(
+        self, lr=0.001, penalty="None", C=0.01, tolerance=0.0001, max_iters=1000
+    ):
         """Basic class for implementing continuous regression estimators which
         are trained with gradient descent optimization on their particular loss
         function.

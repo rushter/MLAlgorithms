@@ -56,6 +56,6 @@ class NaiveBayesClassifier(BaseEstimator):
         mean = self._mean[n_class]
         var = self._var[n_class]
 
-        numerator = np.exp(-(x - mean) ** 2 / (2 * var))
+        numerator = np.exp(-((x - mean) ** 2) / (2 * var))
         denominator = np.sqrt(2 * np.pi * var)
         return numerator / denominator

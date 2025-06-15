@@ -53,7 +53,9 @@ class KMeans(BaseEstimator):
         """Set the initial centroids."""
 
         if init == "random":
-            self.centroids = [self.X[x] for x in random.sample(range(self.n_samples), self.K)]
+            self.centroids = [
+                self.X[x] for x in random.sample(range(self.n_samples), self.K)
+            ]
         elif init == "++":
             self.centroids = [random.choice(self.X)]
             while len(self.centroids) < self.K:
@@ -88,7 +90,6 @@ class KMeans(BaseEstimator):
         return predictions
 
     def _assign(self, centroids):
-
         for row in range(self.n_samples):
             for i, cluster in enumerate(self.clusters):
                 if row in cluster:
@@ -115,11 +116,13 @@ class KMeans(BaseEstimator):
 
     def _dist_from_centers(self):
         """Calculate distance from centers."""
-        return np.array([min([euclidean_distance(x, c) for c in self.centroids]) for x in self.X])
+        return np.array(
+            [min([euclidean_distance(x, c) for c in self.centroids]) for x in self.X]
+        )
 
     def _choose_next_center(self):
         distances = self._dist_from_centers()
-        squared_distances = distances ** 2
+        squared_distances = distances**2
         probs = squared_distances / squared_distances.sum()
         ind = np.random.choice(self.X.shape[0], 1, p=probs)[0]
         return self.X[ind]
@@ -141,7 +144,12 @@ class KMeans(BaseEstimator):
 
         for i, index in enumerate(self.clusters):
             point = np.array(data[index]).T
-            ax.scatter(*point, c=[palette[i], ])
+            ax.scatter(
+                *point,
+                c=[
+                    palette[i],
+                ],
+            )
 
         for point in self.centroids:
             ax.scatter(*point, marker="x", linewidths=10)
