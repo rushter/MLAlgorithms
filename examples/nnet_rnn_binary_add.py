@@ -38,7 +38,9 @@ def addition_dataset(dim=10, n_samples=10000, batch_size=64):
         # Generate target variable (a+b)
         y[i, :, 0] = list(reversed([int(x) for x in binary_format.format(a + b)]))
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1111)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=1111
+    )
 
     # Round number of examples for batch processing
     train_b = (X_train.shape[0] // batch_size) * batch_size

@@ -8,7 +8,13 @@ from mla.tsne import TSNE
 logging.basicConfig(level=logging.DEBUG)
 
 X, y = make_classification(
-    n_samples=500, n_features=10, n_informative=5, n_redundant=0, random_state=1111, n_classes=2, class_sep=2.5
+    n_samples=500,
+    n_features=10,
+    n_informative=5,
+    n_redundant=0,
+    random_state=1111,
+    n_classes=2,
+    class_sep=2.5,
 )
 
 p = TSNE(2, max_iter=500)

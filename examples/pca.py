@@ -12,11 +12,18 @@ from mla.pca import PCA
 
 # Generate a random binary classification problem.
 X, y = make_classification(
-    n_samples=1000, n_features=100, n_informative=75, random_state=1111, n_classes=2, class_sep=2.5
+    n_samples=1000,
+    n_features=100,
+    n_informative=75,
+    random_state=1111,
+    n_classes=2,
+    class_sep=2.5,
 )
 
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=1111)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=1111
+)
 
 for s in ["svd", "eigen"]:
     p = PCA(15, solver=s)

@@ -13,9 +13,17 @@ from mla.metrics.metrics import mean_squared_error, accuracy
 def regression():
     # Generate a random regression problem
     X, y = make_regression(
-        n_samples=500, n_features=5, n_informative=5, n_targets=1, noise=0.05, random_state=1111, bias=0.5
+        n_samples=500,
+        n_features=5,
+        n_informative=5,
+        n_targets=1,
+        noise=0.05,
+        random_state=1111,
+        bias=0.5,
     )
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=1111)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.25, random_state=1111
+    )
 
     model = knn.KNNRegressor(k=5, distance_func=distance.euclidean)
     model.fit(X_train, y_train)
@@ -35,7 +43,9 @@ def classification():
         class_sep=1.5,
     )
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=1111)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.1, random_state=1111
+    )
 
     clf = knn.KNNClassifier(k=5, distance_func=distance.euclidean)
 

@@ -23,10 +23,17 @@ logging.basicConfig(level=logging.DEBUG)
 def classification():
     # Generate a random binary classification problem.
     X, y = make_classification(
-        n_samples=1000, n_features=100, n_informative=75, random_state=1111, n_classes=2, class_sep=2.5
+        n_samples=1000,
+        n_features=100,
+        n_informative=75,
+        random_state=1111,
+        n_classes=2,
+        class_sep=2.5,
     )
     y = one_hot(y)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.15, random_state=1111)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.15, random_state=1111
+    )
 
     model = NeuralNet(
         layers=[
@@ -51,9 +58,18 @@ def classification():
 
 def regression():
     # Generate a random regression problem
-    X, y = make_regression(n_samples=5000, n_features=25, n_informative=25, n_targets=1, random_state=100, noise=0.05)
+    X, y = make_regression(
+        n_samples=5000,
+        n_features=25,
+        n_informative=25,
+        n_targets=1,
+        random_state=100,
+        noise=0.05,
+    )
     y *= 0.01
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=1111)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.1, random_state=1111
+    )
 
     model = NeuralNet(
         layers=[
