@@ -43,6 +43,19 @@ def leakyrelu(z, a=0.01):
     return np.maximum(z * a, z)
 
 
+def gelu(z):
+    """
+    Gaussian Error Linear Unit (GELU)
+    """
+    # mainly used in transformers smoother version of relu
+    
+    return 0.5 * z * (
+        1.0 + np.tanh(
+            np.sqrt(2.0 / np.pi) * (z + 0.044715 * np.power(z, 3))
+        )
+    )
+
+
 def get_activation(name):
     """Return activation function by name"""
     try:
