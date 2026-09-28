@@ -12,7 +12,7 @@ from mla.neuralnet.layers import Activation, Dense, Dropout
 from mla.neuralnet.optimizers import Adadelta
 from mla.neuralnet.parameters import Parameters
 from mla.neuralnet.regularizers import L2
-from mla.svm.kernerls import RBF, Linear
+from mla.svm.kernels import RBF, Linear
 from mla.svm.svm import SVM
 from mla.utils import one_hot
 

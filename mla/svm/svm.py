@@ -4,7 +4,7 @@ import logging
 import numpy as np
 
 from mla.base import BaseEstimator
-from mla.svm.kernerls import Linear
+from mla.svm.kernels import Linear
 
 np.random.seed(9999)
 
