@@ -7,7 +7,7 @@ except ImportError:
 from sklearn.datasets import make_classification
 
 from mla.metrics.metrics import accuracy
-from mla.svm.kernerls import Linear, RBF
+from mla.svm.kernels import Linear, RBF
 from mla.svm.svm import SVM
 
 logging.basicConfig(level=logging.DEBUG)
