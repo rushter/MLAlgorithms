@@ -86,3 +86,25 @@ def test_multiclass_logloss():
     assert_almost_equal(f([1], [1]), 0)
     assert_almost_equal(f([1, 1], [1, 1]), 0)
     assert_almost_equal(f([1], [0.5]), -np.log(0.5))
+
+
+@pytest.mark.parametrize(
+    "actual, predicted, expected",
+    [
+        ([1, -1], [2.0, -2.0], 0.0),
+        ([1, -1], [0.0, 0.0], 1.0),
+        ([1, -1], [-1.0, 1.0], 2.0),
+        ([1, -1, 1], [2.0, -0.5, -1.0], 2.5 / 3),
+    ],
+)
+def test_hinge(actual, predicted, expected):
+    assert_almost_equal(metric("hinge")(actual, predicted), expected)
+
+
+def test_hinge_gradient():
+    from autograd import grad
+
+    actual = np.array([1.0, -1.0, 1.0])
+    predicted = np.array([2.0, -0.5, -1.0])
+    gradient = grad(lambda scores: get_metric("hinge")(actual, scores))
+    np.testing.assert_allclose(gradient(predicted), [0.0, 1.0 / 3, -1.0 / 3])
